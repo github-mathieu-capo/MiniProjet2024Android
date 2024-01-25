@@ -28,16 +28,16 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-
+    implementation("com.firebaseui:firebase-ui-storage:8.0.2")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("com.google.firebase:firebase-storage")
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-
     implementation("com.google.firebase:firebase-analytics")
-
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
