@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         restaurants.add(new Restaurant("Restaurant 1", R.drawable.resto1, "Description of Restaurant 1."));
         restaurants.add(new Restaurant("Restaurant 2", R.drawable.resto2, "Description of Restaurant 2."));
-        restaurants.add(new Restaurant("Restaurant 3", R.drawable.resto1, "Description of Restaurant 3."));
+        restaurants.add(new Restaurant("Restaurant 3", R.drawable.resto3, "Description of Restaurant 3."));
 
         return restaurants;
     }
