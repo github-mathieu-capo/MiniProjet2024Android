@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.imageView);
 
         loadImageFromStorageReference(imageRef, imageView);
+
+        // camera
+        findViewById(R.id.buttonOpenCamera).setOnClickListener(v -> openCameraActivity());
+
     }
     private void loadImageFromStorageReference(StorageReference storageReference, ImageView imageView) {
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -49,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG", "Cannot retrieve Image", exception);
             }
         });
+    }
+
+    private void openCameraActivity() {
+        Intent intent = new Intent(this, Camera.class);
+        startActivity(intent);
     }
 
 }
