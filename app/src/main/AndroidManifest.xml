@@ -28,6 +28,10 @@
             android:label="Camera">
             <!-- Ajoutez d'autres attributs d'activité si nécessaire -->
         </activity>
+        <activity
+            android:name=".RestaurantActivity"
+            android:label="RestaurantActivity">
+        </activity>
     </application>
 
 </manifest>

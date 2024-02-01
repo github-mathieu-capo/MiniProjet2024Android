@@ -44,7 +44,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return restaurantList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textViewName;
         TextView textViewDescription;
@@ -54,7 +54,20 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             imageView = itemView.findViewById(R.id.restaurantImage);
             textViewName = itemView.findViewById(R.id.restaurantName);
             textViewDescription = itemView.findViewById(R.id.restaurantDescription);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Get the selected restaurant
+                        Restaurant selectedRestaurant = restaurantList.get(position);
 
+                        Intent intent = new Intent(context, RestaurantActivity.class);
+                        intent.putExtra("restaurantInfo", selectedRestaurant);
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
     }
 }
