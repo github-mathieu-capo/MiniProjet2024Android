@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,11 +38,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Restaurant> generateSampleData() {
-        List<Restaurant> restaurants = new ArrayList<>();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("restaurants");
+        ArrayList<String> imageUrls = FireBaseImageLoader.listAllImagesFromFolder(storageRef);
 
-        restaurants.add(new Restaurant("Restaurant 1", R.drawable.resto1, "Description of Restaurant 1."));
-        restaurants.add(new Restaurant("Restaurant 2", R.drawable.resto2, "Description of Restaurant 2."));
-        restaurants.add(new Restaurant("Restaurant 3", R.drawable.resto3, "Description of Restaurant 3."));
+        List<Restaurant> restaurants = new ArrayList<>();
+        Log.i("TESTTTTT", imageUrls.size()+"zeub");
+        for(int i = 0; i < imageUrls.size(); i++){
+            restaurants.add(new Restaurant("Restaurant"+i, imageUrls.get(i),"Description of Restaurant "+i));
+            Log.i("add resto", i+"");
+        }
         return restaurants;
     }
 
