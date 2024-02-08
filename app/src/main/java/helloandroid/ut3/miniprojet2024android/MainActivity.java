@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
@@ -56,7 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCameraActivity() {
         Intent intent = new Intent(this, Camera.class);
+
+
+
         startActivity(intent);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("users").child("userId").setValue("user2");
     }
 
 }
