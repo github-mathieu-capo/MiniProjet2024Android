@@ -114,13 +114,13 @@ public class Camera extends AppCompatActivity {
                 Image image = null;
                 try {
                     image = reader.acquireLatestImage();
-                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                    byte[] bytes = new byte[buffer.capacity()];
-                    buffer.get(bytes);
-                    save(bytes);
-                } catch (IOException e) {
+//                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+//                    byte[] bytes = new byte[buffer.capacity()];
+//                    buffer.get(bytes);
+                    //save(bytes);
+                } /*catch (IOException e) {
                     e.printStackTrace();
-                } finally {
+                } */finally {
                     if (image != null) {
                         image.close();
                     }
@@ -308,6 +308,25 @@ public class Camera extends AppCompatActivity {
                     super.onCaptureCompleted(session, request, result);
                     // La capture d'image est terminée
                     Log.d(TAG, "Image captured successfully");
+
+                    imageReader.setOnImageAvailableListener(reader -> {
+                        Image image = null;
+                        try {
+                            image = reader.acquireLatestImage();
+                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                    byte[] bytes = new byte[buffer.capacity()];
+                    buffer.get(bytes);
+                            capturedImageData = bytes;
+                        }/* catch (IOException e) {
+                    e.printStackTrace();
+                } */finally {
+                            if (image != null) {
+                                image.close();
+                            }
+                        }
+                    }, backgroundHandler);
+
+
                     uploadImageToFirebaseStorage();
                 }
             }, null);
