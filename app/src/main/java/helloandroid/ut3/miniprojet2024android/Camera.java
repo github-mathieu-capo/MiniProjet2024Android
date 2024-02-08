@@ -21,6 +21,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageUploader;
+
 public class Camera extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 123;
@@ -51,8 +53,6 @@ public class Camera extends AppCompatActivity {
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent();
-            } else {
-                // Permission denied, handle accordingly
             }
         }
     }
@@ -70,31 +70,8 @@ public class Camera extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            uploadImageToFirebase(imageBitmap);
+            FireBaseImageUploader.uploadImage(imageBitmap,UUID.randomUUID().toString());
         }
     }
 
-    private void uploadImageToFirebase(Bitmap bitmap) {
-        // Create a storage reference from our app
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-
-        // Create a reference to "images" folder, where you will save your images
-        StorageReference imagesRef = storageRef.child("images/" + UUID.randomUUID().toString() + ".jpg");
-
-        // Convert bitmap to byte array
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        // Upload the image to Firebase Storage
-        UploadTask uploadTask = imagesRef.putBytes(data);
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            // Image uploaded successfully
-            Log.d("Camera", "Image uploaded to Firebase Storage");
-        }).addOnFailureListener(exception -> {
-            // Handle unsuccessful uploads
-            Log.e("Camera", "Failed to upload image to Firebase Storage: " + exception.getMessage());
-        });
-    }
 }
