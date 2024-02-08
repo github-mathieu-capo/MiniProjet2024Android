@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -14,11 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageUploader;
@@ -33,18 +27,12 @@ public class Camera extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.texture_view);
 
-        cameraOpenButton = findViewById(R.id.camera_button);
-        clickImageView = findViewById(R.id.click_image);
-
-        cameraOpenButton.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(Camera.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(Camera.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
-            } else {
-                dispatchTakePictureIntent();
-            }
-        });
+        if (ContextCompat.checkSelfPermission(Camera.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Camera.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+        } else {
+            dispatchTakePictureIntent();
+        }
     }
 
     @Override
@@ -72,6 +60,7 @@ public class Camera extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             FireBaseImageUploader.uploadImage(imageBitmap,UUID.randomUUID().toString());
         }
+        finish();
     }
 
 }
