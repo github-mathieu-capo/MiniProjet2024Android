@@ -2,6 +2,9 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <queries>
+        <package android:name="com.android.camera2"/>
+    </queries>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <application
@@ -26,7 +29,6 @@
         <activity
             android:name=".Camera"
             android:label="Camera">
-            <!-- Ajoutez d'autres attributs d'activité si nécessaire -->
         </activity>
         <activity
             android:name=".RestaurantActivity"
