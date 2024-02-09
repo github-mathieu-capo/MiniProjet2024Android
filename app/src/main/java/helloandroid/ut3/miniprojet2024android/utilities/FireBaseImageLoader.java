@@ -12,10 +12,13 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 public class FireBaseImageLoader {
 
@@ -37,35 +40,35 @@ public class FireBaseImageLoader {
         });
     }
 
-    public static ArrayList<String> listAllImagesFromFolder(StorageReference storageRef) {
-        ArrayList<String> imageUrls = new ArrayList<>(); // TODO AWAIT LA FIN DES OPERATIONS
+    public static CompletableFuture<ArrayList<String>> listAllImagesFromFolder(StorageReference storageRef) {
+        CompletableFuture<ArrayList<String>> future = new CompletableFuture<>();
 
         storageRef.listAll()
-                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                    @Override
-                    public void onSuccess(ListResult listResult) {
-                        for (StorageReference item : listResult.getItems()) {
-                            item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<android.net.Uri>() {
-                                @Override
-                                public void onSuccess(android.net.Uri uri) {
-                                    String imageUrl = uri.toString();
-                                    imageUrls.add(imageUrl);
+                .addOnSuccessListener(listResult -> {
+                    ArrayList<Task<Uri>> downloadTasks = new ArrayList<>();
+                    for (StorageReference item : listResult.getItems()) {
+                        downloadTasks.add(item.getDownloadUrl());
+                    }
+                    Tasks.whenAllComplete(downloadTasks)
+                            .addOnCompleteListener(task -> {
+                                ArrayList<String> imageUrls = new ArrayList<>();
+                                for (Task<android.net.Uri> downloadTask : downloadTasks) {
+                                    if (downloadTask.isSuccessful()) {
+                                        android.net.Uri uri = downloadTask.getResult();
+                                        String imageUrl = uri.toString();
+                                        imageUrls.add(imageUrl);
+                                    } else {
+                                        Log.e(TAG, "Failed to get download URL for image", downloadTask.getException());
+                                    }
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e(TAG, "Failed to get download URL for image", e);
-                                }
+                                future.complete(imageUrls);
                             });
-                        }
-                    }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Failed to list items in folder", e);
-                    }
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to retrieve images for restaurants", e);
+                    future.completeExceptionally(e);
                 });
-        return imageUrls;
+
+        return future;
     }
 }
