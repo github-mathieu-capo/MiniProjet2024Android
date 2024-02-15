@@ -7,17 +7,17 @@ import androidx.annotation.NonNull;
 
 public class Restaurant implements Parcelable {
     private String name;
-    private int imageResourceId;
+    private String imageUrl;
     private String description;
 
     protected Restaurant(Parcel in) {
         name = in.readString();
-        imageResourceId = in.readInt();
+        imageUrl = in.readString();
         description = in.readString();
     }
-    public Restaurant(String name, int imageResourceId, String description) {
+    public Restaurant(String name, String imageUrl, String description) {
         this.name = name;
-        this.imageResourceId = imageResourceId;
+        this.imageUrl = imageUrl;
         this.description = description;
     }
 
@@ -37,9 +37,7 @@ public class Restaurant implements Parcelable {
         return name;
     }
 
-    public int getImageResourceId() {
-        return imageResourceId;
-    }
+    public String getImageUrl() {return imageUrl; }
 
     public String getDescription() {
         return description;
@@ -53,7 +51,7 @@ public class Restaurant implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeInt(imageResourceId);
+        dest.writeString(imageUrl);
         dest.writeString(description);
     }
 }
