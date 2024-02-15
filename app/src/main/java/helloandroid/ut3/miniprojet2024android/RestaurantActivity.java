@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.FirebaseApp;
+
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 
 public class RestaurantActivity extends AppCompatActivity {
@@ -14,6 +17,8 @@ public class RestaurantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurants_detail);
+
+        FirebaseApp.initializeApp(this);
         Intent intent = getIntent();
         if (intent != null) {
             Restaurant selectedRestaurant = intent.getParcelableExtra("restaurantInfo");
@@ -21,7 +26,9 @@ public class RestaurantActivity extends AppCompatActivity {
             TextView textViewName = findViewById(R.id.restaurantName);
             TextView textViewDescription = findViewById(R.id.restaurantDescription);
 
-            imageView.setImageResource(selectedRestaurant.getImageResourceId());
+            Glide.with(this)
+                    .load(selectedRestaurant.getImageUrl())
+                    .into(imageView);
             textViewName.setText(selectedRestaurant.getName());
             textViewDescription.setText(selectedRestaurant.getDescription());
         }

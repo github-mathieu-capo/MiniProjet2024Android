@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
@@ -34,7 +36,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
-        holder.imageView.setImageResource(restaurant.getImageResourceId());
+        Glide.with(context)
+                .load(restaurant.getImageUrl())
+                .into(holder.imageView);
         holder.textViewName.setText(restaurant.getName());
         holder.textViewDescription.setText(restaurant.getDescription());
     }
