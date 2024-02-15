@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseLoader;
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseUploader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        startActivity(intent);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("users").child("userId").setValue("user2");
+        //startActivity(intent);
+        Object a = FireBaseDatabaseLoader.loadData("restaurants/restaurant_id_1");
+        Log.e("ICIIII",String.valueOf(a));
     }
 
 }
