@@ -11,7 +11,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FireBaseDatabaseLoader {
-    public static Object loadData(String path) {
+
+
+    public static void loadData(String path) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child(path).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -25,7 +27,6 @@ public class FireBaseDatabaseLoader {
                 }
             }
         });
-    return null;
     }
 
 }

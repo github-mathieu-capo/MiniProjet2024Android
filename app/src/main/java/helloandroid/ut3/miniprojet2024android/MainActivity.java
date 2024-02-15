@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Camera.class);
 
 
-
+        Object a = null;
         //startActivity(intent);
-        Object a = FireBaseDatabaseLoader.loadData("restaurants/restaurant_id_1");
-        Log.e("ICIIII",String.valueOf(a));
+        FireBaseDatabaseLoader.loadData("restaurants/restaurant_id_1");
+        //Log.e("ICIIII",String.valueOf(a));
     }
 
 }
