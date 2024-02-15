@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import java.util.concurrent.CompletableFuture;
 
 public class FireBaseDatabaseLoader {
-    public static CompletableFuture<String> loadData(String path) {
-        CompletableFuture<String> future = new CompletableFuture<>();
+    public static CompletableFuture<DataSnapshot> loadData(String path) {
+        CompletableFuture<DataSnapshot> future = new CompletableFuture<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child(path).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -22,9 +22,8 @@ public class FireBaseDatabaseLoader {
                     Log.e("firebase database", "Error getting data", task.getException());
                     future.completeExceptionally(task.getException());
                 } else {
-                    String data = String.valueOf(task.getResult().getValue());
-                    Log.d("firebase database", "Data retrieved with success: " + data);
-                    future.complete(data);
+                    Log.d("firebase database", "Data retrieved with success: " + String.valueOf(task.getResult().getValue()));
+                    future.complete(task.getResult());
                 }
             }
         });

@@ -78,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Camera.class);
 
         //startActivity(intent);
-        String path = "restaurants/restaurant_id_1";
+        String path = "restaurants";
         FireBaseDatabaseLoader.loadData(path)
                 .thenAccept(data -> {
-                    Log.i("Data retrieved: ", data);
+                    data.getChildren().forEach(dataSnapshot -> Log.i("Data retrieved: ", String.valueOf(dataSnapshot)));
                 })
                 .exceptionally(e -> {
                     Log.e("Error occurred while retrieving data: ", e.getMessage());
