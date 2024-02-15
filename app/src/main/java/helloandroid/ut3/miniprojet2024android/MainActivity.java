@@ -65,8 +65,17 @@ public class MainActivity extends AppCompatActivity {
 
         Object a = null;
         //startActivity(intent);
-        FireBaseDatabaseLoader.loadData("restaurants/restaurant_id_1");
-        //Log.e("ICIIII",String.valueOf(a));
+        String path = "restaurants/restaurant_id_1";
+        FireBaseDatabaseLoader.loadData(path)
+                .thenAccept(data -> {
+                    Log.i("Data retrieved: ", data);
+                    // Process the retrieved data here
+                })
+                .exceptionally(e -> {
+                    Log.e("Error occurred while retrieving data: ", e.getMessage());
+                    // Handle the exception here
+                    return null;
+                });
     }
 
 }
