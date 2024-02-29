@@ -59,8 +59,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.restaurantImage);
-            textViewName = itemView.findViewById(R.id.restaurantName);
-            textViewDescription = itemView.findViewById(R.id.restaurantDescription);
+            textViewName = itemView.findViewById(R.id.addAvisLayout);
+            textViewDescription = itemView.findViewById(R.id.note);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

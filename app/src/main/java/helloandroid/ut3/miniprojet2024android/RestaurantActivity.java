@@ -41,8 +41,8 @@ public class RestaurantActivity extends AppCompatActivity {
         if (intent != null) {
             Restaurant selectedRestaurant = intent.getParcelableExtra("restaurantInfo");
             ImageView imageView = findViewById(R.id.restaurantImage);
-            TextView textViewName = findViewById(R.id.restaurantName);
-            TextView textViewDescription = findViewById(R.id.restaurantDescription);
+            TextView textViewName = findViewById(R.id.addAvisLayout);
+            TextView textViewDescription = findViewById(R.id.note);
 
             String pathToImage = "restaurants/"+selectedRestaurant.getImageUrl();
             FireBaseImageLoader.loadImageFromStorageReference(getApplicationContext(),pathToImage,imageView);
@@ -84,6 +84,13 @@ public class RestaurantActivity extends AppCompatActivity {
                 }
             });
         }
+        findViewById(R.id.buttonAjouter).setOnClickListener(v -> openAddAvisActivity());
+    }
+
+
+    private void openAddAvisActivity() {
+        Intent intent = new Intent(this, AddAvisActivity.class);
+        startActivity(intent);
     }
 
     private boolean validateReservationData(String reservationDate, int numberOfPeople) {

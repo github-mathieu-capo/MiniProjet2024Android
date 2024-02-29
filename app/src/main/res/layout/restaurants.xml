@@ -14,7 +14,7 @@
         android:src="@drawable/placeholder_restaurant"/>
 
     <TextView
-        android:id="@+id/restaurantName"
+        android:id="@+id/addAvisLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -22,7 +22,7 @@
         android:text="Restaurant Name"/>
 
     <TextView
-        android:id="@+id/restaurantDescription"
+        android:id="@+id/note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"

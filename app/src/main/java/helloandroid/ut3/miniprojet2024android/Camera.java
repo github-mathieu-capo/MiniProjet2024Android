@@ -21,9 +21,6 @@ public class Camera extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 123;
 
-    private Button cameraOpenButton;
-    private ImageView clickImageView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
