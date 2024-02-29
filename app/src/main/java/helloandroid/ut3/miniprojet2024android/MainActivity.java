@@ -76,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCameraActivity() {
         Intent intent = new Intent(this, Camera.class);
+        startActivity(intent);
+    }
 
-        //startActivity(intent);
+    private void getRestaurantsFromBdd(){
         String path = "restaurants";
         FireBaseDatabaseLoader.loadData(path)
                 .thenAccept(data -> {
