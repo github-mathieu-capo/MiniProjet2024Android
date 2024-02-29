@@ -1,31 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
+    <!-- Header -->
     <ImageView
         android:id="@+id/restaurantImage"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/placeholder_restaurant"/>
+        android:layout_height="200dp"
+        android:src="@drawable/placeholder_restaurant" />
 
-    <TextView
-        android:id="@+id/restaurantName"
+    <!-- Restaurant Details Card -->
+    <androidx.cardview.widget.CardView
+
+        android:id="@+id/restaurantDetailsCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:paddingTop="8dp"
-        android:text="Restaurant Name"/>
+        android:layout_marginTop="200dp"
+        android:elevation="4dp">
 
-    <TextView
-        android:id="@+id/restaurantDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="Description of the restaurant."/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/restaurantName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Restaurant Name"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/restaurantDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Description of the restaurant."
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp" />
+
+            <!-- Reserve Button -->
+            <Button
+                android:id="@+id/reserveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Make Reservation" />
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/light_gray" />
+
+            <!-- Reservation Form -->
+            <LinearLayout
+                android:id="@+id/reservationFormLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/reservationDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Reservation Date"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/numberOfPeople"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Number of People"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/confirmReservationButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Confirm Reservation" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
