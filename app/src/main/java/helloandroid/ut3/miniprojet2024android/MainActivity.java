@@ -80,16 +80,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void getRestaurantsFromBdd(){
-        String path = "restaurants";
-        FireBaseDatabaseLoader.loadData(path)
-                .thenAccept(data -> {
-                    data.getChildren().forEach(dataSnapshot -> Log.i("Data retrieved: ", String.valueOf(dataSnapshot)));
-                })
-                .exceptionally(e -> {
-                    Log.e("Error occurred while retrieving data: ", e.getMessage());
-                    return null;
-                });
-    }
-
 }
