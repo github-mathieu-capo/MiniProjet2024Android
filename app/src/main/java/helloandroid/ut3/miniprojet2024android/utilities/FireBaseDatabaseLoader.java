@@ -1,30 +1,41 @@
 package helloandroid.ut3.miniprojet2024android.utilities;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import android.util.Log;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import helloandroid.ut3.miniprojet2024android.model.Restaurant;
+
 public class FireBaseDatabaseLoader {
-    public static CompletableFuture<DataSnapshot> loadData(String path) {
-        CompletableFuture<DataSnapshot> future = new CompletableFuture<>();
+    public static CompletableFuture<List<Restaurant>> loadData(String path) {
+        CompletableFuture<List<Restaurant>> future = new CompletableFuture<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child(path).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        Query query = ref.child(path);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase database", "Error getting data", task.getException());
-                    future.completeExceptionally(task.getException());
-                } else {
-                    Log.d("firebase database", "Data retrieved with success: " + String.valueOf(task.getResult().getValue()));
-                    future.complete(task.getResult());
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Restaurant> restaurants = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Restaurant restaurant = snapshot.getValue(Restaurant.class);
+                    if (restaurant != null) {
+                        restaurants.add(restaurant);
+                    }
                 }
+                future.complete(restaurants);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                future.completeExceptionally(databaseError.toException());
             }
         });
         return future;
