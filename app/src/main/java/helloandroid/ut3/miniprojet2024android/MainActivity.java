@@ -8,20 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseLoader;
-import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class MainActivity extends AppCompatActivity {
 

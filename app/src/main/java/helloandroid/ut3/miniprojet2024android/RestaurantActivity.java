@@ -8,8 +8,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
