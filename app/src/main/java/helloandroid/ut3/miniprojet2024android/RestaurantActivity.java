@@ -29,6 +29,8 @@ public class RestaurantActivity extends AppCompatActivity {
     private EditText reservationDateEditText;
     private EditText numberOfPeopleEditText;
 
+    private boolean showReservationForm = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,12 @@ public class RestaurantActivity extends AppCompatActivity {
             reserveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    reservationFormLayout.setVisibility(View.VISIBLE);
+                    showReservationForm = !showReservationForm;
+                    if(showReservationForm) {
+                        reservationFormLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        reservationFormLayout.setVisibility(View.GONE);
+                    }
                 }
             });
 
