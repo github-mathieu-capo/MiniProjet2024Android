@@ -10,19 +10,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseLoader;
-import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseUploader;
-import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,35 +27,48 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
 
-        generateSampleData().thenAccept(restaurantList -> {
-            RecyclerView recyclerView = findViewById(R.id.recyclerViewRestaurants);
-            RestaurantAdapter adapter = new RestaurantAdapter(restaurantList, this);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(adapter);
-        }).exceptionally(throwable -> {
-            Log.e("MainActivity", "Error loading restaurants Data", throwable);
-            return null;
+
+
+        generateSampleData(new DataLoadedCallback() {
+            @Override
+            public void onDataLoaded(List<Restaurant> restaurants) {
+                RecyclerView recyclerView = findViewById(R.id.recyclerViewRestaurants);
+                RestaurantAdapter adapter = new RestaurantAdapter(restaurants, MainActivity.this);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("MainActivity", "Error loading restaurants Data", e);
+            }
         });
 
         findViewById(R.id.buttonOpenCamera).setOnClickListener(v -> openCameraActivity());
     }
 
-    private CompletableFuture<List<Restaurant>> generateSampleData() {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference().child("restaurants");
+    public interface DataLoadedCallback {
+        void onDataLoaded(List<Restaurant> restaurants);
+        void onError(Exception e);
+    }
 
-        return FireBaseImageLoader.listAllImagesFromFolder(storageRef)
-                .thenApply(imageUrls -> {
-                    List<Restaurant> restaurants = new ArrayList<>();
-                    for(int i = 0; i < imageUrls.size(); i++) {
-                        restaurants.add(new Restaurant("Restaurant " + i, imageUrls.get(i), "Description of Restaurant " + i));
-                    }
-                    return restaurants;
-                })
-                .exceptionally(throwable -> {
-                    Log.e("generateSampleData", "Error generating sample data", throwable);
-                    return Collections.emptyList();
-                });
+    private void generateSampleData(DataLoadedCallback callback) {
+
+        String path = "restaurants";
+        CompletableFuture<List<Restaurant>> future = FireBaseDatabaseLoader.loadData(path);
+        future.thenAccept(restaurants -> {
+            System.out.println("Retrieved restaurants:");
+            for (Restaurant restaurant : restaurants) {
+                System.out.println("Name: " + restaurant.getName());
+                System.out.println("Image URL: " + restaurant.getImageUrl());
+                System.out.println("Description: " + restaurant.getDescription());
+                System.out.println();
+            }
+            callback.onDataLoaded(restaurants);
+        }).exceptionally(ex -> {
+            callback.onError((Exception) ex);
+            return null;
+        });
     }
 
 
@@ -77,16 +85,7 @@ public class MainActivity extends AppCompatActivity {
     private void openCameraActivity() {
         Intent intent = new Intent(this, Camera.class);
 
-        //startActivity(intent);
-        String path = "restaurants/restaurant_id_1";
-        FireBaseDatabaseLoader.loadData(path)
-                .thenAccept(data -> {
-                    Log.i("Data retrieved: ", data);
-                })
-                .exceptionally(e -> {
-                    Log.e("Error occurred while retrieving data: ", e.getMessage());
-                    return null;
-                });
+        startActivity(intent);
     }
 
 }

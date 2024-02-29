@@ -10,6 +10,11 @@ public class Restaurant implements Parcelable {
     private String imageUrl;
     private String description;
 
+    protected Restaurant() {
+        name = "";
+        imageUrl = "";
+        description ="";
+    }
     protected Restaurant(Parcel in) {
         name = in.readString();
         imageUrl = in.readString();
