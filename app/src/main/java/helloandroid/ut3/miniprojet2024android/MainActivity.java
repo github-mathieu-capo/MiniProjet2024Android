@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseLoader;
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseUploader;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class MainActivity extends AppCompatActivity {
@@ -73,6 +77,18 @@ public class MainActivity extends AppCompatActivity {
     private void openCameraActivity() {
         Intent intent = new Intent(this, Camera.class);
         startActivity(intent);
+    }
+
+    private void getRestaurantsFromBdd(){
+        String path = "restaurants";
+        FireBaseDatabaseLoader.loadData(path)
+                .thenAccept(data -> {
+                    data.getChildren().forEach(dataSnapshot -> Log.i("Data retrieved: ", String.valueOf(dataSnapshot)));
+                })
+                .exceptionally(e -> {
+                    Log.e("Error occurred while retrieving data: ", e.getMessage());
+                    return null;
+                });
     }
 
 }
