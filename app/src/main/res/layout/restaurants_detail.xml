@@ -31,17 +31,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Restaurant Name"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/restaurantDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="Description of the restaurant."
+                android:textSize="16sp"
                 android:textColor="@color/dark_gray"
-                android:textSize="16sp" />
+                android:layout_marginTop="8dp"/>
 
             <!-- Reserve Button -->
             <Button
@@ -49,7 +49,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Make Reservation" />
+                android:text="Make Reservation"
+                android:textColor="@android:color/white"
+                android:background="@color/colorPrimary"/>
 
             <!-- Divider -->
             <View
@@ -72,12 +74,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Reservation Date"
+                    android:drawableLeft="@drawable/ic_calendar_sized"
+                    android:drawablePadding="8dp"
                     android:inputType="date" />
 
                 <EditText
                     android:id="@+id/numberOfPeople"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_person_sized"
                     android:hint="Number of People"
                     android:inputType="number" />
 
@@ -85,7 +90,10 @@
                     android:id="@+id/confirmReservationButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Confirm Reservation" />
+                    android:text="Confirm Reservation"
+                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimary"
+                    android:paddingVertical="12dp"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
