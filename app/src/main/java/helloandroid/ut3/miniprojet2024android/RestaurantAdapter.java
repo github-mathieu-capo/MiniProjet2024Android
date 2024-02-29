@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
 
@@ -36,6 +37,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
+        String pathToFile = "restaurants/"+restaurant.getImageUrl();
+        FireBaseImageLoader.loadImageFromStorageReference(context,pathToFile,holder.imageView);
         Glide.with(context)
                 .load(restaurant.getImageUrl())
                 .into(holder.imageView);

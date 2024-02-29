@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
@@ -18,6 +19,7 @@ import java.util.concurrent.CompletableFuture;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseLoader;
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-
-
 
         generateSampleData(new DataLoadedCallback() {
             @Override
@@ -69,16 +69,6 @@ public class MainActivity extends AppCompatActivity {
             callback.onError((Exception) ex);
             return null;
         });
-    }
-
-
-    private void testDownload() {
-        // Firebase Storage references
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference imageRef = storageRef.child("bananabetter.jpg");
-        //ImageView imageView = findViewById(R.id.imageView);
-        //FireBaseImageLoader.loadImageFromStorageReference(getApplicationContext(),imageRef,imageView);
     }
 
 

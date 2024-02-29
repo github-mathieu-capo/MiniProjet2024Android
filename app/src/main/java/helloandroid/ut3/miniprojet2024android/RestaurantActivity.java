@@ -7,10 +7,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
+import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class RestaurantActivity extends AppCompatActivity {
     @Override
@@ -26,9 +28,8 @@ public class RestaurantActivity extends AppCompatActivity {
             TextView textViewName = findViewById(R.id.restaurantName);
             TextView textViewDescription = findViewById(R.id.restaurantDescription);
 
-            Glide.with(this)
-                    .load(selectedRestaurant.getImageUrl())
-                    .into(imageView);
+            String pathToImage = "restaurants/"+selectedRestaurant.getImageUrl();
+            FireBaseImageLoader.loadImageFromStorageReference(getApplicationContext(),pathToImage,imageView);
             textViewName.setText(selectedRestaurant.getName());
             textViewDescription.setText(selectedRestaurant.getDescription());
         }

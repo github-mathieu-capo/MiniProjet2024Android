@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
@@ -22,8 +23,12 @@ import java.util.concurrent.CompletableFuture;
 
 public class FireBaseImageLoader {
 
-    public static void loadImageFromStorageReference(Context applicationContext, StorageReference imageReference, ImageView imageView) {
-        imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+    public static void loadImageFromStorageReference(Context applicationContext, String imageReference, ImageView imageView) {
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child(imageReference);
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String downloadUrl = uri.toString();
