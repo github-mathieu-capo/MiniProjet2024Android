@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -76,6 +78,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Camera.class);
 
         startActivity(intent);
+    }
+
+    private void getRestaurantsFromBdd(){
+        String path = "restaurants";
+        FireBaseDatabaseLoader.loadData(path)
+                .thenAccept(data -> {
+                    data.getChildren().forEach(dataSnapshot -> Log.i("Data retrieved: ", String.valueOf(dataSnapshot)));
+                })
+                .exceptionally(e -> {
+                    Log.e("Error occurred while retrieving data: ", e.getMessage());
+                    return null;
+                });
     }
 
 }

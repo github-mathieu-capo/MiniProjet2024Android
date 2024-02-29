@@ -38,7 +38,6 @@ public class FireBaseDatabaseLoader {
                 future.completeExceptionally(databaseError.toException());
             }
         });
-
         return future;
     }
 }
