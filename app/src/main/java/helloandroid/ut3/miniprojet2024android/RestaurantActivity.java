@@ -71,10 +71,15 @@ public class RestaurantActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     String reservationDate = reservationDateEditText.getText().toString();
-                    int numberOfPeople = Integer.parseInt(numberOfPeopleEditText.getText().toString());
-                    if(validateReservationData(reservationDate, numberOfPeople)) {
-                        String confirmationMessage = "Reservation confirmed for " + numberOfPeople + " people on " + reservationDate + ".";
-                        Toast.makeText(getApplicationContext(), confirmationMessage, Toast.LENGTH_LONG).show();
+                    String numberOfPeopleStr = numberOfPeopleEditText.getText().toString();
+                    if (numberOfPeopleStr.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Please enter the number of people.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        int numberOfPeople = Integer.parseInt(numberOfPeopleEditText.getText().toString());
+                        if (validateReservationData(reservationDate, numberOfPeople)) {
+                            String confirmationMessage = "Reservation confirmed for " + numberOfPeople + " people on " + reservationDate + ".";
+                            Toast.makeText(getApplicationContext(), confirmationMessage, Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
