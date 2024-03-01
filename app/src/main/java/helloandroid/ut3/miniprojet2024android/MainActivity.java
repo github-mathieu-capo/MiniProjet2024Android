@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("MainActivity", "Error loading restaurants Data", e);
             }
         });
-
-        findViewById(R.id.buttonOpenCamera).setOnClickListener(v -> openCameraActivity());
     }
 
     public interface DataLoadedCallback {
@@ -64,13 +62,6 @@ public class MainActivity extends AppCompatActivity {
             callback.onError((Exception) ex);
             return null;
         });
-    }
-
-
-    private void openCameraActivity() {
-        Intent intent = new Intent(this, Camera.class);
-
-        startActivity(intent);
     }
 
 }

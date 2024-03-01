@@ -21,6 +21,7 @@ public class AddAvisActivity extends AppCompatActivity {
 
 
         FirebaseApp.initializeApp(this);
+        findViewById(R.id.buttonOpenCamera).setOnClickListener(v -> openCameraActivity());
     }
 
     private void ajouterAvis() {
@@ -50,5 +51,11 @@ public class AddAvisActivity extends AppCompatActivity {
 
             System.out.println("TODO : AFFICHER NOTE");
         }
+    }
+
+    private void openCameraActivity() {
+        Intent intent = new Intent(this, Camera.class);
+
+        startActivity(intent);
     }
 }
