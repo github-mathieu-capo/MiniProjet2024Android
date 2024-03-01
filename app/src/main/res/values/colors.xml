@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+
     <!-- Text Colors -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
@@ -18,4 +19,6 @@
     <color name="disabled_button_text">#A9A9A9</color>
 
     <color name="gray">#CCCCCC</color>
+    <color name="yellow">#FFFF00</color>
+
 </resources>

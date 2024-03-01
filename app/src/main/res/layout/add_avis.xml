@@ -39,55 +39,49 @@
             android:textColor="@color/black"
             android:layout_marginBottom="8dp"/>
 
-        <RadioGroup
-            android:id="@+id/note"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/starLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="16dp">
 
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
+            <!-- Use ImageView for yellow star icons -->
+            <ImageView
+                android:id="@+id/star1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="1 Star" />
 
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
+            <ImageView
+                android:id="@+id/star2"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="2 Star" />
 
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
+            <ImageView
+                android:id="@+id/star3"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="3 Star" />
 
-            <RadioButton
-                android:id="@+id/radioButton4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
+            <ImageView
+                android:id="@+id/star4"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="4 Star" />
 
-            <RadioButton
-                android:id="@+id/radioButton5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
-
-
-        </RadioGroup>
+            <ImageView
+                android:id="@+id/star5"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="5 Star" />
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
