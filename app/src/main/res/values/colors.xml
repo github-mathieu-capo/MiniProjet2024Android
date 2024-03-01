@@ -16,4 +16,6 @@
     <!-- Placeholder Colors -->
     <color name="hint_text">#B3B3B3</color>
     <color name="disabled_button_text">#A9A9A9</color>
+
+    <color name="gray">#CCCCCC</color>
 </resources>

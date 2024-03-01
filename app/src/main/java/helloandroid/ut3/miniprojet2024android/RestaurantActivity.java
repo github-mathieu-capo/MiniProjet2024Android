@@ -41,8 +41,8 @@ public class RestaurantActivity extends AppCompatActivity {
         if (intent != null) {
             Restaurant selectedRestaurant = intent.getParcelableExtra("restaurantInfo");
             ImageView imageView = findViewById(R.id.restaurantImage);
-            TextView textViewName = findViewById(R.id.addAvisLayout);
-            TextView textViewDescription = findViewById(R.id.note);
+            TextView textViewName = findViewById(R.id.restaurantName);
+            TextView textViewDescription = findViewById(R.id.restaurantDescription);
 
             String pathToImage = "restaurants/"+selectedRestaurant.getImageUrl();
             FireBaseImageLoader.loadImageFromStorageReference(getApplicationContext(),pathToImage,imageView);

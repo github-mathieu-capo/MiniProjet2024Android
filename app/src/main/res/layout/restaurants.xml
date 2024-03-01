@@ -14,18 +14,20 @@
         android:src="@drawable/placeholder_restaurant"/>
 
     <TextView
-        android:id="@+id/addAvisLayout"
+        android:id="@+id/restaurantName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:paddingTop="8dp"
-        android:text="Restaurant Name"/>
+        android:text="Restaurant Name"
+        android:textSize="24sp"
+        android:textColor="@color/black"/>
 
     <TextView
-        android:id="@+id/note"
+        android:id="@+id/restaurantDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="Description of the restaurant."/>
+        android:text="Description of the restaurant."
+        android:textSize="16sp"
+        android:textColor="@color/dark_gray"
+        android:layout_marginTop="8dp"/>
 
 </LinearLayout>

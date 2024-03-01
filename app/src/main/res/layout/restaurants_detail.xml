@@ -48,9 +48,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="@color/colorPrimary"
                 android:text="Make Reservation"
-                android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@android:color/white" />
 
             <!-- Divider -->
             <View
@@ -93,9 +93,19 @@
                     android:textColor="@android:color/white"
                     android:background="@color/colorPrimary"
                     android:paddingVertical="12dp"/>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/light_gray" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <!-- Review Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/ReviewCard"
@@ -105,28 +115,22 @@
         android:elevation="4dp"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonAjouter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Ajouter un avis"/>
-
-        <TextView
-            android:id="@+id/addAvisLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="Restaurant Name"
-            android:textSize="18sp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/note"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="Description of the restaurant."/>
+            <Button
+                android:id="@+id/buttonAjouter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ajouter un avis"
+                android:textColor="@android:color/white"
+                android:background="@color/colorPrimary"
+                android:paddingVertical="12dp"/>
+
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
