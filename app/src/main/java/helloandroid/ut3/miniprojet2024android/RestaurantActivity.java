@@ -2,7 +2,9 @@ package helloandroid.ut3.miniprojet2024android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,8 +20,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
@@ -83,9 +87,64 @@ public class RestaurantActivity extends AppCompatActivity {
                     }
                 }
             });
+            findViewById(R.id.buttonAjouter).setOnClickListener(v -> openAddAvisActivity());
+
+            LinearLayout reviewLayout = findViewById(R.id.Reviews);
+
+            List<Avis> reviews = selectedRestaurant.getReviews();
+
+            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+
+            for (Avis review : reviews) {
+                View reviewItemView = inflater.inflate(R.layout.review_item_layout, reviewLayout, false);
+
+                TextView authorTextView = reviewItemView.findViewById(R.id.authorNameTextView);
+                authorTextView.setText(review.getName());
+
+                TextView descriptionTextView = reviewItemView.findViewById(R.id.descriptionTextView);
+                descriptionTextView.setText(review.getDescription());
+
+                ////////////////// NOTATION
+                LinearLayout starsLayout = reviewItemView.findViewById(R.id.starsLayout);
+                int score = review.getGrade();
+
+                for (int i = 0; i < score; i++) {
+                    ImageView starImageView = new ImageView(getApplicationContext());
+                    starImageView.setImageResource(R.drawable.ic_yellow_star_filled);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
+                    starImageView.setLayoutParams(layoutParams);
+                    starsLayout.addView(starImageView);
+                }
+
+                for (int i = score; i < 5; i++) {
+                    ImageView starImageView = new ImageView(getApplicationContext());
+                    starImageView.setImageResource(R.drawable.ic_yellow_star_outline);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
+                    starImageView.setLayoutParams(layoutParams);
+                    starsLayout.addView(starImageView);
+                }
+                /////////////////
+
+                ImageView photoImageView = reviewItemView.findViewById(R.id.photoImageView);
+                if (!review.getPhotos().isEmpty()) {
+                    photoImageView.setVisibility(View.VISIBLE);
+                    //TODO retrieve the images from database using loadImageFromStorageReference
+                }
+
+                reviewLayout.addView(reviewItemView);
+            }
         }
-        findViewById(R.id.buttonAjouter).setOnClickListener(v -> openAddAvisActivity());
+
     }
+
 
 
     private void openAddAvisActivity() {

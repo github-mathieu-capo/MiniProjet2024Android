@@ -5,25 +5,24 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Restaurant implements Parcelable {
     private String name;
     private String imageUrl;
     private String description;
+    private List<Avis> reviews;
 
-    protected Restaurant() {
-        name = "";
-        imageUrl = "";
-        description ="";
-    }
     protected Restaurant(Parcel in) {
         name = in.readString();
         imageUrl = in.readString();
         description = in.readString();
-    }
-    public Restaurant(String name, String imageUrl, String description) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.description = description;
+        reviews = in.createTypedArrayList(Avis.CREATOR);
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -38,15 +37,36 @@ public class Restaurant implements Parcelable {
         }
     };
 
+    public Restaurant(String name, String imageUrl, String description, List<Avis> reviews) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.reviews = reviews;
+    }
+
+    protected Restaurant() {
+        name = "";
+        imageUrl = "";
+        description ="";
+        reviews = new ArrayList<>();
+    }
+
     public String getName() {
         return name;
     }
 
-    public String getImageUrl() {return imageUrl; }
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     public String getDescription() {
         return description;
     }
+
+    public List<Avis> getReviews() {
+        return reviews;
+    }
+
 
     @Override
     public int describeContents() {
@@ -54,10 +74,16 @@ public class Restaurant implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(imageUrl);
         dest.writeString(description);
+        dest.writeTypedList(reviews);
+    }
+
+    public void setReviews(List<Avis> reviews) {
+        this.reviews = reviews;
     }
 }
+
 
