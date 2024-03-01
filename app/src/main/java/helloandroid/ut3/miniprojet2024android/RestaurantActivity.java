@@ -2,6 +2,7 @@ package helloandroid.ut3.miniprojet2024android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.FirebaseApp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,11 +38,9 @@ public class RestaurantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurants_detail);
-
-        FirebaseApp.initializeApp(this);
         Intent intent = getIntent();
         if (intent != null) {
-            Restaurant selectedRestaurant = intent.getParcelableExtra("restaurantInfo");
+            Restaurant selectedRestaurant = intent.getParcelableExtra("restaurantInfos");
             ImageView imageView = findViewById(R.id.restaurantImage);
             TextView textViewName = findViewById(R.id.restaurantName);
             TextView textViewDescription = findViewById(R.id.restaurantDescription);
@@ -70,7 +67,6 @@ public class RestaurantActivity extends AppCompatActivity {
                     }
                 }
             });
-
             confirmReservationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -87,7 +83,7 @@ public class RestaurantActivity extends AppCompatActivity {
                     }
                 }
             });
-            findViewById(R.id.buttonAjouter).setOnClickListener(v -> openAddAvisActivity());
+            findViewById(R.id.buttonAjouter).setOnClickListener(v -> openAddAvisActivity(selectedRestaurant));
 
             LinearLayout reviewLayout = findViewById(R.id.Reviews);
 
@@ -103,11 +99,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
                 TextView descriptionTextView = reviewItemView.findViewById(R.id.descriptionTextView);
                 descriptionTextView.setText(review.getDescription());
-
                 ////////////////// NOTATION
                 LinearLayout starsLayout = reviewItemView.findViewById(R.id.starsLayout);
                 int score = review.getGrade();
-
                 for (int i = 0; i < score; i++) {
                     ImageView starImageView = new ImageView(getApplicationContext());
                     starImageView.setImageResource(R.drawable.ic_yellow_star_filled);
@@ -132,7 +126,6 @@ public class RestaurantActivity extends AppCompatActivity {
                     starsLayout.addView(starImageView);
                 }
                 /////////////////
-
                 ImageView photoImageView = reviewItemView.findViewById(R.id.photoImageView);
                 if (!review.getPhotos().isEmpty()) {
                     photoImageView.setVisibility(View.VISIBLE);
@@ -147,8 +140,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
 
 
-    private void openAddAvisActivity() {
-        Intent intent = new Intent(this, AddAvisActivity.class);
+    private void openAddAvisActivity(Restaurant selectedRestaurant) {
+        Intent intent = new Intent(getApplicationContext(), AddAvisActivity.class);
+        intent.putExtra("restaurantInfo", selectedRestaurant);
         startActivity(intent);
     }
 

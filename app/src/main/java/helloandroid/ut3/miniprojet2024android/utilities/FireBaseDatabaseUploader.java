@@ -1,7 +1,5 @@
 package helloandroid.ut3.miniprojet2024android.utilities;
 
-import android.graphics.Bitmap;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

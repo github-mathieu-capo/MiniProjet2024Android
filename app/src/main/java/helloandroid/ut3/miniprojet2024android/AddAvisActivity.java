@@ -2,25 +2,44 @@ package helloandroid.ut3.miniprojet2024android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import helloandroid.ut3.miniprojet2024android.model.Avis;
+import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 
 public class AddAvisActivity extends AppCompatActivity {
 
     private ImageView star1, star2, star3, star4, star5;
     private int rating = 0;
+
+    private EditText authorEditText;
+    private TextView descriptionEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_avis);
 
+        authorEditText = findViewById(R.id.author);
+        descriptionEditText = findViewById(R.id.description);
         findViewById(R.id.buttonAjouter).setOnClickListener(v -> ajouterAvis());
 
 
@@ -71,28 +90,33 @@ public class AddAvisActivity extends AppCompatActivity {
     private void ajouterAvis() {
         Intent intent = getIntent();
         if (intent != null) {
-            TextView textViewAuthor = findViewById(R.id.author);
-            TextView textViewDescription = findViewById(R.id.description);
+            String author = authorEditText.getText().toString();
+            int grade = rating;
+            ArrayList<String> photos = new ArrayList<>();
 
+            String description = descriptionEditText.getText().toString();
 
-            // Récupérez l'ID du RadioButton sélectionné dans le RadioGroup
-            //TODO Update to retrieve the imageViews int selectedRadioButtonId = noteRadioGroup.getCheckedRadioButtonId();
+            Avis avis = new Avis(author, grade, photos, description);
 
-            // Trouvez le RadioButton sélectionné en utilisant son ID
-            /*RadioButton selectedRadioButton = findViewById(selectedRadioButtonId);
+            Restaurant restaurant = getIntent().getParcelableExtra("restaurantInfo");
 
-            if (selectedRadioButton != null) {
-                // Récupérez la valeur du RadioButton sélectionné
-                String selectedNote = selectedRadioButton.getText().toString();
+            restaurant.getReviews().add(avis);
 
-                // Utilisez la valeur sélectionnée comme vous le souhaitez
-                System.out.println("LA NOTE EST : " + selectedNote);
-            } else {
-                // Aucun RadioButton sélectionné
-                System.out.println("Aucune note sélectionnée");
-            }*/
-
-            System.out.println("TODO : AFFICHER NOTE");
+            DatabaseReference restaurantRef = FirebaseDatabase.getInstance().getReference().child("restaurants").child(restaurant.getId());
+            restaurantRef.setValue(restaurant)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), "Review added successfully!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Failed to add review. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 

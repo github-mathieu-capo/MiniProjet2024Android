@@ -26,8 +26,11 @@ public class FireBaseDatabaseLoader {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Restaurant> restaurants = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String restaurantId = snapshot.getKey();
                     Restaurant restaurant = snapshot.getValue(Restaurant.class);
                     if (restaurant != null) {
+                        restaurant.setId(restaurantId);
+
                         List<Avis> reviews = new ArrayList<>();
                         for (DataSnapshot reviewSnapshot : snapshot.child("reviews").getChildren()) {
                             Avis review = reviewSnapshot.getValue(Avis.class);

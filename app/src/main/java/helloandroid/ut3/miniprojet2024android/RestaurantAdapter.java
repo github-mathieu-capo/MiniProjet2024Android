@@ -1,6 +1,7 @@
 package helloandroid.ut3.miniprojet2024android;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,11 +67,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        // Get the selected restaurant
                         Restaurant selectedRestaurant = restaurantList.get(position);
 
                         Intent intent = new Intent(context, RestaurantActivity.class);
-                        intent.putExtra("restaurantInfo", selectedRestaurant);
+                        intent.putExtra("restaurantInfos", selectedRestaurant);
                         context.startActivity(intent);
                     }
                 }

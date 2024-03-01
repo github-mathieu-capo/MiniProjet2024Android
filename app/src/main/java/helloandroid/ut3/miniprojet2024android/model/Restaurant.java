@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Restaurant implements Parcelable {
+
+    private String id;
     private String name;
     private String imageUrl;
     private String description;
     private List<Avis> reviews;
 
     protected Restaurant(Parcel in) {
+        id = in.readString();
         name = in.readString();
         imageUrl = in.readString();
         description = in.readString();
@@ -37,7 +40,8 @@ public class Restaurant implements Parcelable {
         }
     };
 
-    public Restaurant(String name, String imageUrl, String description, List<Avis> reviews) {
+    public Restaurant(String id, String name, String imageUrl, String description, List<Avis> reviews) {
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -45,10 +49,19 @@ public class Restaurant implements Parcelable {
     }
 
     protected Restaurant() {
+        id = "";
         name = "";
         imageUrl = "";
         description ="";
         reviews = new ArrayList<>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -75,6 +88,7 @@ public class Restaurant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(imageUrl);
         dest.writeString(description);

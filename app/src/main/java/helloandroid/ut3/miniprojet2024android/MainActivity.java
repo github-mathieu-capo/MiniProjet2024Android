@@ -53,11 +53,14 @@ public class MainActivity extends AppCompatActivity {
         future.thenAccept(restaurants -> {
             System.out.println("Retrieved restaurants:");
             for (Restaurant restaurant : restaurants) {
+                System.out.println("Id: " + restaurant.getId());
                 System.out.println("Name: " + restaurant.getName());
                 System.out.println("Image URL: " + restaurant.getImageUrl());
                 System.out.println("Description: " + restaurant.getDescription());
                 for (Avis review : restaurant.getReviews()) {
-                    System.out.println("Review description: " + review.getName());
+                    System.out.println("Review name: " + review.getName());
+                    System.out.println("Review grade: " + review.getGrade());
+                    System.out.println("Review description: " + review.getDescription());
                 }
             }
             callback.onDataLoaded(restaurants);

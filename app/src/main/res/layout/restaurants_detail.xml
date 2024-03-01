@@ -107,7 +107,7 @@
     </androidx.cardview.widget.CardView>
 
     <!-- Review Card -->
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:id="@+id/ReviewCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -126,12 +126,13 @@
                 android:id="@+id/buttonAjouter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ajouter un avis"
+                android:text="Add a review"
                 android:textColor="@android:color/white"
                 android:background="@color/colorPrimary"
                 android:paddingVertical="12dp"/>
-
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+
+    </ScrollView>
+
 
 </RelativeLayout>
