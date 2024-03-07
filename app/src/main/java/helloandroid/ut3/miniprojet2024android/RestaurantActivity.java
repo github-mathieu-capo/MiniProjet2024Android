@@ -1,5 +1,7 @@
 package helloandroid.ut3.miniprojet2024android;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
@@ -28,6 +35,20 @@ import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class RestaurantActivity extends AppCompatActivity {
 
+    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        Log.i("TESTTTT", "TESTTT");
+                        if (intent != null) {
+                            Restaurant restaurantWithNewReview = intent.getParcelableExtra("restaurantWithNewReview");
+                            setRestaurantLayout(restaurantWithNewReview);
+                        }
+                    }
+                }
+            });
     private LinearLayout reservationFormLayout;
     private EditText reservationDateEditText;
     private EditText numberOfPeopleEditText;
@@ -41,14 +62,8 @@ public class RestaurantActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             Restaurant selectedRestaurant = intent.getParcelableExtra("restaurantInfos");
-            ImageView imageView = findViewById(R.id.restaurantImage);
-            TextView textViewName = findViewById(R.id.restaurantName);
-            TextView textViewDescription = findViewById(R.id.restaurantDescription);
 
-            String pathToImage = "restaurants/"+selectedRestaurant.getImageUrl();
-            FireBaseImageLoader.loadImageFromStorageReference(getApplicationContext(),pathToImage,imageView);
-            textViewName.setText(selectedRestaurant.getName());
-            textViewDescription.setText(selectedRestaurant.getDescription());
+            setRestaurantLayout(selectedRestaurant);
 
             Button reserveButton = findViewById(R.id.reserveButton);
             reservationFormLayout = findViewById(R.id.reservationFormLayout);
@@ -85,65 +100,76 @@ public class RestaurantActivity extends AppCompatActivity {
             });
             findViewById(R.id.buttonAjouter).setOnClickListener(v -> openAddAvisActivity(selectedRestaurant));
 
-            LinearLayout reviewLayout = findViewById(R.id.Reviews);
-
-            List<Avis> reviews = selectedRestaurant.getReviews();
-
-            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-
-            for (Avis review : reviews) {
-                View reviewItemView = inflater.inflate(R.layout.review_item_layout, reviewLayout, false);
-
-                TextView authorTextView = reviewItemView.findViewById(R.id.authorNameTextView);
-                authorTextView.setText(review.getName());
-
-                TextView descriptionTextView = reviewItemView.findViewById(R.id.descriptionTextView);
-                descriptionTextView.setText(review.getDescription());
-                ////////////////// NOTATION
-                LinearLayout starsLayout = reviewItemView.findViewById(R.id.starsLayout);
-                int score = review.getGrade();
-                for (int i = 0; i < score; i++) {
-                    ImageView starImageView = new ImageView(getApplicationContext());
-                    starImageView.setImageResource(R.drawable.ic_yellow_star_filled);
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT
-                    );
-                    layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
-                    starImageView.setLayoutParams(layoutParams);
-                    starsLayout.addView(starImageView);
-                }
-
-                for (int i = score; i < 5; i++) {
-                    ImageView starImageView = new ImageView(getApplicationContext());
-                    starImageView.setImageResource(R.drawable.ic_yellow_star_outline);
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT
-                    );
-                    layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
-                    starImageView.setLayoutParams(layoutParams);
-                    starsLayout.addView(starImageView);
-                }
-                /////////////////
-                ImageView photoImageView = reviewItemView.findViewById(R.id.photoImageView);
-                if (!review.getPhotos().isEmpty()) {
-                    photoImageView.setVisibility(View.VISIBLE);
-                    //TODO retrieve the images from database using loadImageFromStorageReference
-                }
-
-                reviewLayout.addView(reviewItemView);
-            }
         }
 
     }
 
-
-
     private void openAddAvisActivity(Restaurant selectedRestaurant) {
-        Intent intent = new Intent(getApplicationContext(), AddAvisActivity.class);
-        intent.putExtra("restaurantInfo", selectedRestaurant);
-        startActivity(intent);
+        Intent mCustomIntent = new Intent(this, AddAvisActivity.class);
+        mCustomIntent.putExtra("restaurantInfo", selectedRestaurant);
+        mStartForResult.launch(mCustomIntent);
+    }
+
+
+    private void setRestaurantLayout(Restaurant selectedRestaurant) {
+        ImageView imageView = findViewById(R.id.restaurantImage);
+        TextView textViewName = findViewById(R.id.restaurantName);
+        TextView textViewDescription = findViewById(R.id.restaurantDescription);
+
+        String pathToImage = "restaurants/"+selectedRestaurant.getImageUrl();
+        FireBaseImageLoader.loadImageFromStorageReference(getApplicationContext(),pathToImage,imageView);
+        textViewName.setText(selectedRestaurant.getName());
+        textViewDescription.setText(selectedRestaurant.getDescription());
+
+        LinearLayout reviewLayout = findViewById(R.id.Reviews);
+
+        List<Avis> reviews = selectedRestaurant.getReviews();
+
+        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+
+        for (Avis review : reviews) {
+            View reviewItemView = inflater.inflate(R.layout.review_item_layout, reviewLayout, false);
+
+            TextView authorTextView = reviewItemView.findViewById(R.id.authorNameTextView);
+            authorTextView.setText(review.getName());
+
+            TextView descriptionTextView = reviewItemView.findViewById(R.id.descriptionTextView);
+            descriptionTextView.setText(review.getDescription());
+            ////////////////// NOTATION
+            LinearLayout starsLayout = reviewItemView.findViewById(R.id.starsLayout);
+            int score = review.getGrade();
+            for (int i = 0; i < score; i++) {
+                ImageView starImageView = new ImageView(getApplicationContext());
+                starImageView.setImageResource(R.drawable.ic_yellow_star_filled);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
+                starImageView.setLayoutParams(layoutParams);
+                starsLayout.addView(starImageView);
+            }
+
+            for (int i = score; i < 5; i++) {
+                ImageView starImageView = new ImageView(getApplicationContext());
+                starImageView.setImageResource(R.drawable.ic_yellow_star_outline);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
+                starImageView.setLayoutParams(layoutParams);
+                starsLayout.addView(starImageView);
+            }
+            /////////////////
+            ImageView photoImageView = reviewItemView.findViewById(R.id.photoImageView);
+            if (!review.getPhotos().isEmpty()) {
+                photoImageView.setVisibility(View.VISIBLE);
+                //TODO retrieve the images from database using loadImageFromStorageReference
+            }
+
+            reviewLayout.addView(reviewItemView);
+        }
     }
 
     private boolean validateReservationData(String reservationDate, int numberOfPeople) {
