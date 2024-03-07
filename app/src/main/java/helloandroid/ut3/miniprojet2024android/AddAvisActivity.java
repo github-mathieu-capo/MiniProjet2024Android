@@ -50,41 +50,18 @@ public class AddAvisActivity extends AppCompatActivity {
         star3 = findViewById(R.id.star3);
         star4 = findViewById(R.id.star4);
         star5 = findViewById(R.id.star5);
-        // Set OnClickListener for each star
-        star1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStarClick(1);
-            }
-        });
+        for (int i = 1; i <= 5; i++) {
+            int starId = getResources().getIdentifier("star" + i, "id", getPackageName());
+            ImageView star = findViewById(starId);
+            final int finalI = i;
+            star.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onStarClick(finalI);
+                }
+            });
+        }
 
-        star2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStarClick(2);
-            }
-        });
-
-        star3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStarClick(3);
-            }
-        });
-
-        star4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStarClick(4);
-            }
-        });
-
-        star5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStarClick(5);
-            }
-        });
     }
 
     private void ajouterAvis() {
@@ -130,43 +107,17 @@ public class AddAvisActivity extends AppCompatActivity {
     }
 
     public void onStarClick(int selectedRating) {
-        // Reset all stars to outline
-        star1.setImageResource(R.drawable.ic_yellow_star_outline);
-        star2.setImageResource(R.drawable.ic_yellow_star_outline);
-        star3.setImageResource(R.drawable.ic_yellow_star_outline);
-        star4.setImageResource(R.drawable.ic_yellow_star_outline);
-        star5.setImageResource(R.drawable.ic_yellow_star_outline);
+        ImageView[] stars = {star1, star2, star3, star4, star5};
 
-        // Set selected star and stars before it to filled
-        switch (selectedRating) {
-            case 1:
-                star1.setImageResource(R.drawable.ic_yellow_star_filled);
-                break;
-            case 2:
-                star1.setImageResource(R.drawable.ic_yellow_star_filled);
-                star2.setImageResource(R.drawable.ic_yellow_star_filled);
-                break;
-            case 3:
-                star1.setImageResource(R.drawable.ic_yellow_star_filled);
-                star2.setImageResource(R.drawable.ic_yellow_star_filled);
-                star3.setImageResource(R.drawable.ic_yellow_star_filled);
-                break;
-            case 4:
-                star1.setImageResource(R.drawable.ic_yellow_star_filled);
-                star2.setImageResource(R.drawable.ic_yellow_star_filled);
-                star3.setImageResource(R.drawable.ic_yellow_star_filled);
-                star4.setImageResource(R.drawable.ic_yellow_star_filled);
-                break;
-            case 5:
-                star1.setImageResource(R.drawable.ic_yellow_star_filled);
-                star2.setImageResource(R.drawable.ic_yellow_star_filled);
-                star3.setImageResource(R.drawable.ic_yellow_star_filled);
-                star4.setImageResource(R.drawable.ic_yellow_star_filled);
-                star5.setImageResource(R.drawable.ic_yellow_star_filled);
-                break;
+        for (ImageView star : stars) {
+            star.setImageResource(R.drawable.ic_yellow_star_outline);
         }
 
-        // Update rating
+        for (int i = 0; i < selectedRating; i++) {
+            stars[i].setImageResource(R.drawable.ic_yellow_star_filled);
+        }
+
         rating = selectedRating;
     }
+
 }
