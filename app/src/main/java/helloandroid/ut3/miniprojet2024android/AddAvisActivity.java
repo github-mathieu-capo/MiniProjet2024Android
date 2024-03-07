@@ -1,6 +1,10 @@
 package helloandroid.ut3.miniprojet2024android;
 
+import static helloandroid.ut3.miniprojet2024android.Camera.REQUEST_IMAGE_CAPTURE;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -19,8 +23,11 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
@@ -32,6 +39,7 @@ public class AddAvisActivity extends AppCompatActivity {
 
     private EditText authorEditText;
     private TextView descriptionEditText;
+    private ImageView picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,34 @@ public class AddAvisActivity extends AppCompatActivity {
             });
         }
 
+        picture = findViewById(R.id.picture);
+        picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(this, Camera.class);
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+            // L'image a été capturée avec succès, obtenir le chemin de l'image
+            String imagePath = data.getStringExtra("imagePath");
+            // Charger l'image à partir du chemin du fichier et l'afficher dans l'ImageView
+            File imgFile = new File(imagePath);
+            if (imgFile.exists()) {
+                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                picture.setImageBitmap(bitmap);
+            }
+        }
     }
 
     private void ajouterAvis() {
@@ -119,5 +155,31 @@ public class AddAvisActivity extends AppCompatActivity {
 
         rating = selectedRating;
     }
+
+//    private void setPic() {
+//        // Récupérer les dimensions de l'image à afficher
+//        int targetW = picture.getWidth();
+//        int targetH = picture.getHeight();
+//
+//        // Obtenir les dimensions de l'image du fichier
+//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//        bmOptions.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+//        int photoW = bmOptions.outWidth;
+//        int photoH = bmOptions.outHeight;
+//
+//        // Déterminer combien réduire l'échantillonnage de l'image
+//        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+//
+//        // Charger l'image dans la mémoire tout en réduisant sa taille
+//        bmOptions.inJustDecodeBounds = false;
+//        bmOptions.inSampleSize = scaleFactor;
+//        bmOptions.inPurgeable = true;
+//
+//        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+//
+//        // Afficher l'image dans votre ImageView
+//        imageView.setImageBitmap(bitmap);
+//    }
 
 }
