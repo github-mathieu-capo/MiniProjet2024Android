@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.view.View;
@@ -25,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -52,7 +49,6 @@ public class AddAvisActivity extends AppCompatActivity {
 
 
         FirebaseApp.initializeApp(this);
-        findViewById(R.id.buttonOpenCamera).setOnClickListener(v -> openCameraActivity());
         star1 = findViewById(R.id.star1);
         star2 = findViewById(R.id.star2);
         star3 = findViewById(R.id.star3);
@@ -70,7 +66,7 @@ public class AddAvisActivity extends AppCompatActivity {
             });
         }
 
-        picture = findViewById(R.id.picture);
+        picture = findViewById(R.id.addPicture);
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,31 +151,5 @@ public class AddAvisActivity extends AppCompatActivity {
 
         rating = selectedRating;
     }
-
-//    private void setPic() {
-//        // Récupérer les dimensions de l'image à afficher
-//        int targetW = picture.getWidth();
-//        int targetH = picture.getHeight();
-//
-//        // Obtenir les dimensions de l'image du fichier
-//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//        bmOptions.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-//        int photoW = bmOptions.outWidth;
-//        int photoH = bmOptions.outHeight;
-//
-//        // Déterminer combien réduire l'échantillonnage de l'image
-//        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-//
-//        // Charger l'image dans la mémoire tout en réduisant sa taille
-//        bmOptions.inJustDecodeBounds = false;
-//        bmOptions.inSampleSize = scaleFactor;
-//        bmOptions.inPurgeable = true;
-//
-//        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-//
-//        // Afficher l'image dans votre ImageView
-//        imageView.setImageBitmap(bitmap);
-//    }
 
 }
