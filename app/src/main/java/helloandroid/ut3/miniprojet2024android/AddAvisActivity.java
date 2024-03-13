@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +37,8 @@ import java.util.List;
 
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
+import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;
+import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantViewModel;
 
 public class AddAvisActivity extends AppCompatActivity {
 
@@ -125,35 +128,35 @@ public class AddAvisActivity extends AppCompatActivity {
             String author = authorEditText.getText().toString();
             int grade = rating;
             ArrayList<String> photos = new ArrayList<>();
-
             String description = descriptionEditText.getText().toString();
 
             Avis avis = new Avis(author, grade, photos, description);
 
             Restaurant restaurant = getIntent().getParcelableExtra("restaurantInfo");
 
-            restaurant.getReviews().add(avis);
+            RestaurantRepository restaurantRepository = new RestaurantRepository();
 
-            DatabaseReference restaurantRef = FirebaseDatabase.getInstance().getReference().child("restaurants").child(restaurant.getId());
-            restaurantRef.setValue(restaurant)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getApplicationContext(), "Review added successfully!", Toast.LENGTH_SHORT).show();
-                            Intent resultIntent = new Intent();
-                            resultIntent.putExtra("newReview", avis);
-                            setResult(RESULT_OK, resultIntent);
-                            finish();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), "Failed to add review. Please try again.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            if (restaurant!=null) {
+                restaurantRepository.updateRestaurantWithReview(restaurant,avis, new RestaurantRepository.OnRestaurantUpdatedListener() {
+                    @Override
+                    public void onRestaurantUpdatedSuccessfully() {
+                        Toast.makeText(getApplicationContext(), "Review added successfully!", Toast.LENGTH_SHORT).show();
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("RestaurantId", restaurant.getId());
+                        setResult(RESULT_OK, resultIntent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onRestaurantUpdateFailed() {
+                        Toast.makeText(getApplicationContext(), "Failed to add review. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
+
+
 
     private void openCameraActivity() {
         Intent intent = new Intent(this, Camera.class);

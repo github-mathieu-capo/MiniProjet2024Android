@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
+import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
 
 public class RestaurantActivity extends AppCompatActivity {
@@ -42,8 +43,8 @@ public class RestaurantActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
                         if (intent != null) {
-                            Avis newReview = intent.getParcelableExtra("newReview");
-                            setReviews(newReview);
+                            String restaurantId = intent.getStringExtra("RestaurantId");
+                            retrieveRestaurantById(restaurantId);
                         }
                     }
                 }
@@ -53,6 +54,8 @@ public class RestaurantActivity extends AppCompatActivity {
     private EditText numberOfPeopleEditText;
 
     private boolean showReservationForm = false;
+    private RestaurantRepository restaurantRepository;
+    private Restaurant selectedRestaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +63,10 @@ public class RestaurantActivity extends AppCompatActivity {
         setContentView(R.layout.restaurants_detail);
         Intent intent = getIntent();
         if (intent != null) {
-            Restaurant selectedRestaurant = intent.getParcelableExtra("restaurantInfos");
+            String selectedRestaurantId = intent.getStringExtra("RestaurantId");
+            restaurantRepository = new RestaurantRepository();
+            retrieveRestaurantById(selectedRestaurantId);
 
-            setRestaurantLayout(selectedRestaurant);
 
             Button reserveButton = findViewById(R.id.reserveButton);
             reservationFormLayout = findViewById(R.id.reservationFormLayout);
@@ -100,6 +104,20 @@ public class RestaurantActivity extends AppCompatActivity {
             findViewById(R.id.buttonAjouter).setOnClickListener(v -> openAddAvisActivity(selectedRestaurant));
         }
 
+    }
+
+    private void retrieveRestaurantById(String restaurantId) {
+        restaurantRepository.getRestaurantById(restaurantId, new RestaurantRepository.OnRestaurantLoadedListener() {
+            @Override
+            public void onRestaurantLoaded(Restaurant restaurant) {
+                if (restaurant != null) {
+                    selectedRestaurant = restaurant;
+                    setRestaurantLayout(restaurant); // TODO bug doubled reviews
+                } else {
+                    // TODO bug Restaurant not found
+                }
+            }
+        });
     }
 
     private void openAddAvisActivity(Restaurant selectedRestaurant) {
