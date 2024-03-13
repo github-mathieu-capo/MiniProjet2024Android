@@ -25,65 +25,65 @@
             android:id="@+id/author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/gray"
             android:hint="Your Name"
-            android:inputType="text"
-            android:padding="12dp"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:backgroundTint="@color/gray"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:inputType="text" />
 
         <TextView
             android:id="@+id/noteText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:text="Rating"
+            android:textSize="18sp"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:layout_marginBottom="8dp"/>
 
         <LinearLayout
             android:id="@+id/starLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
 
             <!-- Use ImageView for yellow star icons -->
             <ImageView
                 android:id="@+id/star1"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:contentDescription="1 Star"
-                android:src="@drawable/ic_yellow_star_outline" />
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="1 Star" />
 
             <ImageView
                 android:id="@+id/star2"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:contentDescription="2 Star"
-                android:src="@drawable/ic_yellow_star_outline" />
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="2 Star" />
 
             <ImageView
                 android:id="@+id/star3"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:contentDescription="3 Star"
-                android:src="@drawable/ic_yellow_star_outline" />
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="3 Star" />
 
             <ImageView
                 android:id="@+id/star4"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:contentDescription="4 Star"
-                android:src="@drawable/ic_yellow_star_outline" />
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="4 Star" />
 
             <ImageView
                 android:id="@+id/star5"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:contentDescription="5 Star"
-                android:src="@drawable/ic_yellow_star_outline" />
+                android:src="@drawable/ic_yellow_star_outline"
+                android:contentDescription="5 Star" />
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout

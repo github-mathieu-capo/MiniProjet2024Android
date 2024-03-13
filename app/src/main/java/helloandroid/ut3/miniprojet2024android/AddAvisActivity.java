@@ -2,11 +2,17 @@ package helloandroid.ut3.miniprojet2024android;
 
 import static helloandroid.ut3.miniprojet2024android.Camera.REQUEST_IMAGE_CAPTURE;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.view.View;
@@ -14,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,9 +29,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
@@ -42,6 +50,15 @@ public class AddAvisActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_avis);
+        ConstraintLayout parentLayout = findViewById(R.id.addAvisLayout);
+
+        parentLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard(AddAvisActivity.this);
+                return false;
+            }
+        });
 
         authorEditText = findViewById(R.id.author);
         descriptionEditText = findViewById(R.id.description);
@@ -49,6 +66,7 @@ public class AddAvisActivity extends AppCompatActivity {
 
 
         FirebaseApp.initializeApp(this);
+        findViewById(R.id.buttonOpenCamera).setOnClickListener(v -> openCameraActivity());
         star1 = findViewById(R.id.star1);
         star2 = findViewById(R.id.star2);
         star3 = findViewById(R.id.star3);
@@ -65,7 +83,6 @@ public class AddAvisActivity extends AppCompatActivity {
                 }
             });
         }
-
         picture = findViewById(R.id.addPicture);
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +110,12 @@ public class AddAvisActivity extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 picture.setImageBitmap(bitmap);
             }
+    }
+
+    private void hideKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (activity.getCurrentFocus() != null) {
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
     }
 
@@ -118,7 +141,7 @@ public class AddAvisActivity extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getApplicationContext(), "Review added successfully!", Toast.LENGTH_SHORT).show();
                             Intent resultIntent = new Intent();
-                            resultIntent.putExtra("restaurantWithNewReview", restaurant);
+                            resultIntent.putExtra("newReview", avis);
                             setResult(RESULT_OK, resultIntent);
                             finish();
                         }
