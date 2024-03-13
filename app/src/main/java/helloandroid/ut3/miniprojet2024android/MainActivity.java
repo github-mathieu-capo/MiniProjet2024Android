@@ -24,7 +24,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
+        Intent intent = new Intent(this, MapActivity.class);
 
+        startActivity(intent);
         generateSampleData(new DataLoadedCallback() {
             @Override
             public void onDataLoaded(List<Restaurant> restaurants) {
