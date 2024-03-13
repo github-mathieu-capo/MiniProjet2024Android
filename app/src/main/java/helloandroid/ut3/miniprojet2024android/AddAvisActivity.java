@@ -44,7 +44,8 @@ public class AddAvisActivity extends AppCompatActivity {
 
     private EditText authorEditText;
     private TextView descriptionEditText;
-    private ImageView picture;
+    private ImageView picture1, picture2, picture3;
+    private int currentImageViewId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,18 +83,27 @@ public class AddAvisActivity extends AppCompatActivity {
                 }
             });
         }
-        picture = findViewById(R.id.addPicture);
-        picture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dispatchTakePictureIntent();
-            }
-        });
+        picture1 = findViewById(R.id.picture1);
+        picture2 = findViewById(R.id.picture2);
+        picture3 = findViewById(R.id.picture3);
+
+        picture1.setOnClickListener(imageClickListener);
+        picture2.setOnClickListener(imageClickListener);
+        picture3.setOnClickListener(imageClickListener);
 
     }
 
-    private void dispatchTakePictureIntent() {
+    private View.OnClickListener imageClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int imageViewId = v.getId();
+            dispatchTakePictureIntent(imageViewId);
+        }
+    };
+
+    private void dispatchTakePictureIntent(int imageViewId) {
         Intent takePictureIntent = new Intent(this, Camera.class);
+        takePictureIntent.putExtra("imageViewId", imageViewId);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
@@ -104,10 +114,16 @@ public class AddAvisActivity extends AppCompatActivity {
             // L'image a été capturée avec succès, obtenir le chemin de l'image
             String imagePath = data.getStringExtra("imagePath");
             // Charger l'image à partir du chemin du fichier et l'afficher dans l'ImageView
-            File imgFile = new File(imagePath);
-            if (imgFile.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                picture.setImageBitmap(bitmap);
+            int imageViewId = data.getIntExtra("imageViewId", -1);
+            if (imageViewId != -1) {
+                ImageView imageView = findViewById(imageViewId);
+                if (imageView != null) {
+                    File imgFile = new File(imagePath);
+                    if (imgFile.exists()) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        imageView.setImageBitmap(bitmap);
+                    }
+                }
             }
         }
     }

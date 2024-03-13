@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             for (Restaurant restaurant : restaurants) {
                 System.out.println("Id: " + restaurant.getId());
                 System.out.println("Name: " + restaurant.getName());
+                System.out.println("Address: " + restaurant.getAddress());
                 System.out.println("Image URL: " + restaurant.getImageUrl());
                 System.out.println("Description: " + restaurant.getDescription());
                 for (Avis review : restaurant.getReviews()) {
