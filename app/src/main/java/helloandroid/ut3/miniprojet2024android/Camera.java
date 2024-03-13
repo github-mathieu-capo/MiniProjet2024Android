@@ -86,11 +86,12 @@ public class Camera extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("imagePath", imagePath);
-            resultIntent.putExtra("imageViewId", data.getIntExtra("imageViewId", -1));
-            setResult(RESULT_OK, resultIntent);
+            // Image capturée avec succès, renvoyer le chemin de l'image à l'activité AddAvis
+            Intent intent = new Intent();
+            intent.putExtra("imagePath", imagePath);
+            setResult(RESULT_OK, intent);
         } else {
+            // Gérer l'échec de la capture d'image
             setResult(RESULT_CANCELED);
         }
         finish();
