@@ -66,7 +66,6 @@ public class AddAvisActivity extends AppCompatActivity {
 
 
         FirebaseApp.initializeApp(this);
-        findViewById(R.id.buttonOpenCamera).setOnClickListener(v -> openCameraActivity());
         star1 = findViewById(R.id.star1);
         star2 = findViewById(R.id.star2);
         star3 = findViewById(R.id.star3);
@@ -110,6 +109,7 @@ public class AddAvisActivity extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 picture.setImageBitmap(bitmap);
             }
+        }
     }
 
     private void hideKeyboard(Activity activity) {
