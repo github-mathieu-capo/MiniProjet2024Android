@@ -41,10 +41,9 @@ public class RestaurantActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
-                        Log.i("TESTTTT", "TESTTT");
                         if (intent != null) {
-                            Restaurant restaurantWithNewReview = intent.getParcelableExtra("restaurantWithNewReview");
-                            setRestaurantLayout(restaurantWithNewReview);
+                            Avis newReview = intent.getParcelableExtra("newReview");
+                            setReviews(newReview);
                         }
                     }
                 }
@@ -116,61 +115,73 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView textViewName = findViewById(R.id.restaurantName);
         TextView textViewDescription = findViewById(R.id.restaurantDescription);
 
-        String pathToImage = "restaurants/"+selectedRestaurant.getImageUrl();
-        FireBaseImageLoader.loadImageFromStorageReference(getApplicationContext(),pathToImage,imageView);
+        String pathToImage = "restaurants/" + selectedRestaurant.getImageUrl();
+        FireBaseImageLoader.loadImageFromStorageReference(getApplicationContext(), pathToImage, imageView);
         textViewName.setText(selectedRestaurant.getName());
         textViewDescription.setText(selectedRestaurant.getDescription());
 
+        setReviews(selectedRestaurant.getReviews());
+    }
+    private void setReviews(List<Avis> reviews) {
         LinearLayout reviewLayout = findViewById(R.id.Reviews);
-
-        List<Avis> reviews = selectedRestaurant.getReviews();
-
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
         for (Avis review : reviews) {
             View reviewItemView = inflater.inflate(R.layout.review_item_layout, reviewLayout, false);
-
-            TextView authorTextView = reviewItemView.findViewById(R.id.authorNameTextView);
-            authorTextView.setText(review.getName());
-
-            TextView descriptionTextView = reviewItemView.findViewById(R.id.descriptionTextView);
-            descriptionTextView.setText(review.getDescription());
-            ////////////////// NOTATION
-            LinearLayout starsLayout = reviewItemView.findViewById(R.id.starsLayout);
-            int score = review.getGrade();
-            for (int i = 0; i < score; i++) {
-                ImageView starImageView = new ImageView(getApplicationContext());
-                starImageView.setImageResource(R.drawable.ic_yellow_star_filled);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
-                starImageView.setLayoutParams(layoutParams);
-                starsLayout.addView(starImageView);
-            }
-
-            for (int i = score; i < 5; i++) {
-                ImageView starImageView = new ImageView(getApplicationContext());
-                starImageView.setImageResource(R.drawable.ic_yellow_star_outline);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
-                starImageView.setLayoutParams(layoutParams);
-                starsLayout.addView(starImageView);
-            }
-            /////////////////
-            ImageView photoImageView = reviewItemView.findViewById(R.id.photoImageView);
-            if (!review.getPhotos().isEmpty()) {
-                photoImageView.setVisibility(View.VISIBLE);
-                //TODO retrieve the images from database using loadImageFromStorageReference
-            }
-
+            setupReview(reviewItemView, review);
             reviewLayout.addView(reviewItemView);
         }
     }
+
+    private void setReviews(Avis review) {
+        LinearLayout reviewLayout = findViewById(R.id.Reviews);
+        View reviewItemView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.review_item_layout, reviewLayout, false);
+        setupReview(reviewItemView, review);
+        reviewLayout.addView(reviewItemView);
+    }
+
+    private void setupReview(View reviewItemView, Avis review) {
+        TextView authorTextView = reviewItemView.findViewById(R.id.authorNameTextView);
+        authorTextView.setText(review.getName());
+
+        TextView descriptionTextView = reviewItemView.findViewById(R.id.descriptionTextView);
+        descriptionTextView.setText(review.getDescription());
+
+        LinearLayout starsLayout = reviewItemView.findViewById(R.id.starsLayout);
+        int score = review.getGrade();
+        addStars(starsLayout, score);
+
+        ImageView photoImageView = reviewItemView.findViewById(R.id.photoImageView);
+        if (!review.getPhotos().isEmpty()) {
+            photoImageView.setVisibility(View.VISIBLE);
+            // TODO: Retrieve the images from the database using loadImageFromStorageReference
+        }
+    }
+
+    private void addStars(LinearLayout starsLayout, int score) {
+        for (int i = 0; i < score; i++) {
+            ImageView starImageView = createStarImageView(R.drawable.ic_yellow_star_filled);
+            starsLayout.addView(starImageView);
+        }
+
+        for (int i = score; i < 5; i++) {
+            ImageView starImageView = createStarImageView(R.drawable.ic_yellow_star_outline);
+            starsLayout.addView(starImageView);
+        }
+    }
+
+    private ImageView createStarImageView(int imageResource) {
+        ImageView starImageView = new ImageView(getApplicationContext());
+        starImageView.setImageResource(imageResource);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(0, 0, 8, 0); // Add margin between stars
+        starImageView.setLayoutParams(layoutParams);
+        return starImageView;
+    }
+
 
     private boolean validateReservationData(String reservationDate, int numberOfPeople) {
         // Check if the number of people is within the limit (not more than 12)

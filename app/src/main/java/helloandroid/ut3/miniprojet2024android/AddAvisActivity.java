@@ -107,7 +107,7 @@ public class AddAvisActivity extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getApplicationContext(), "Review added successfully!", Toast.LENGTH_SHORT).show();
                             Intent resultIntent = new Intent();
-                            resultIntent.putExtra("restaurantWithNewReview", restaurant);
+                            resultIntent.putExtra("newReview", avis);
                             setResult(RESULT_OK, resultIntent);
                             finish();
                         }
