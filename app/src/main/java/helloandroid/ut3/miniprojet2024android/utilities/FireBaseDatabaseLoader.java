@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 
 public class FireBaseDatabaseLoader {
@@ -25,8 +26,19 @@ public class FireBaseDatabaseLoader {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Restaurant> restaurants = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String restaurantId = snapshot.getKey();
                     Restaurant restaurant = snapshot.getValue(Restaurant.class);
                     if (restaurant != null) {
+                        restaurant.setId(restaurantId);
+
+                        List<Avis> reviews = new ArrayList<>();
+                        for (DataSnapshot reviewSnapshot : snapshot.child("reviews").getChildren()) {
+                            Avis review = reviewSnapshot.getValue(Avis.class);
+                            if (review != null) {
+                                reviews.add(review);
+                            }
+                        }
+                        restaurant.setReviews(reviews);
                         restaurants.add(restaurant);
                     }
                 }

@@ -13,7 +13,6 @@
 
     <!-- Restaurant Details Card -->
     <androidx.cardview.widget.CardView
-
         android:id="@+id/restaurantDetailsCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,9 +48,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="@color/colorPrimary"
                 android:text="Make Reservation"
-                android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@android:color/white" />
 
             <!-- Divider -->
             <View
@@ -94,8 +93,54 @@
                     android:textColor="@android:color/white"
                     android:background="@color/colorPrimary"
                     android:paddingVertical="12dp"/>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/light_gray" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/AddReviewBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_below="@id/restaurantDetailsCard">
+        <Button
+            android:id="@+id/buttonAjouter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add a review"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:paddingVertical="12dp"/>
+    </LinearLayout>
+
+    <!-- Review Card -->
+    <ScrollView
+        android:id="@+id/ReviewCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/AddReviewBtn"
+        android:elevation="4dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/Reviews"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </RelativeLayout>

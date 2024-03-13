@@ -6,8 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.widget.Button;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -20,9 +18,6 @@ import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageUploader;
 public class Camera extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 123;
-
-    private Button cameraOpenButton;
-    private ImageView clickImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

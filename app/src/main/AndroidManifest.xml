@@ -34,6 +34,10 @@
             android:name=".RestaurantActivity"
             android:label="RestaurantActivity">
         </activity>
+        <activity
+            android:name=".AddAvisActivity"
+            android:label="AddAvisActivity">
+        </activity>
     </application>
 
 </manifest>

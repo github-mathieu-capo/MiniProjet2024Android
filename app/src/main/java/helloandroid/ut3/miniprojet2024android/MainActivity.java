@@ -13,6 +13,7 @@ import com.google.firebase.FirebaseApp;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseDatabaseLoader;
 
@@ -38,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("MainActivity", "Error loading restaurants Data", e);
             }
         });
-
-        findViewById(R.id.buttonOpenCamera).setOnClickListener(v -> openCameraActivity());
     }
 
     public interface DataLoadedCallback {
@@ -54,23 +53,21 @@ public class MainActivity extends AppCompatActivity {
         future.thenAccept(restaurants -> {
             System.out.println("Retrieved restaurants:");
             for (Restaurant restaurant : restaurants) {
+                System.out.println("Id: " + restaurant.getId());
                 System.out.println("Name: " + restaurant.getName());
                 System.out.println("Image URL: " + restaurant.getImageUrl());
                 System.out.println("Description: " + restaurant.getDescription());
-                System.out.println();
+                for (Avis review : restaurant.getReviews()) {
+                    System.out.println("Review name: " + review.getName());
+                    System.out.println("Review grade: " + review.getGrade());
+                    System.out.println("Review description: " + review.getDescription());
+                }
             }
             callback.onDataLoaded(restaurants);
         }).exceptionally(ex -> {
             callback.onError((Exception) ex);
             return null;
         });
-    }
-
-
-    private void openCameraActivity() {
-        Intent intent = new Intent(this, Camera.class);
-
-        startActivity(intent);
     }
 
 }
