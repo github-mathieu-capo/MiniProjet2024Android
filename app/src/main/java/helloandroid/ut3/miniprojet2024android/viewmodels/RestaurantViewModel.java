@@ -31,4 +31,5 @@ public class RestaurantViewModel extends ViewModel {
             }
         });
     }
+
 }

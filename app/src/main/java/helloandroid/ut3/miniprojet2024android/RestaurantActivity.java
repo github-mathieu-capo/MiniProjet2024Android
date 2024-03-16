@@ -1,10 +1,8 @@
 package helloandroid.ut3.miniprojet2024android;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,30 +26,17 @@ import java.util.Locale;
 
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
-import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;
 import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
+import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;
 
 public class RestaurantActivity extends AppCompatActivity {
 
-    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent intent = result.getData();
-                        if (intent != null) {
-                            String restaurantId = intent.getStringExtra("RestaurantId");
-                            retrieveRestaurantById(restaurantId);
-                        }
-                    }
-                }
-            });
     private LinearLayout reservationFormLayout;
     private EditText reservationDateEditText;
     private EditText numberOfPeopleEditText;
 
     private boolean showReservationForm = false;
-    private RestaurantRepository restaurantRepository;
+    private RestaurantDetailViewModel viewModel;
     private Restaurant selectedRestaurant;
 
     @Override
@@ -64,9 +46,8 @@ public class RestaurantActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             String selectedRestaurantId = intent.getStringExtra("RestaurantId");
-            restaurantRepository = new RestaurantRepository();
-            retrieveRestaurantById(selectedRestaurantId);
 
+            viewModel = new ViewModelProvider(this,new RestaurantDetailViewModel(selectedRestaurantId)).get(RestaurantDetailViewModel.class);
 
             Button reserveButton = findViewById(R.id.reserveButton);
             reservationFormLayout = findViewById(R.id.reservationFormLayout);
@@ -106,15 +87,19 @@ public class RestaurantActivity extends AppCompatActivity {
 
     }
 
-    private void retrieveRestaurantById(String restaurantId) {
-        restaurantRepository.getRestaurantById(restaurantId, new RestaurantRepository.OnRestaurantLoadedListener() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        observeRestaurantChanges();
+    }
+
+    private void observeRestaurantChanges() {
+        viewModel.getRestaurant().observe(this, new Observer<Restaurant>() {
             @Override
-            public void onRestaurantLoaded(Restaurant restaurant) {
+            public void onChanged(Restaurant restaurant) {
                 if (restaurant != null) {
                     selectedRestaurant = restaurant;
-                    setRestaurantLayout(restaurant); // TODO bug doubled reviews
-                } else {
-                    // TODO bug Restaurant not found
+                    setRestaurantLayout(restaurant);
                 }
             }
         });
@@ -122,8 +107,8 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private void openAddAvisActivity(Restaurant selectedRestaurant) {
         Intent mCustomIntent = new Intent(this, AddAvisActivity.class);
-        mCustomIntent.putExtra("restaurantInfo", selectedRestaurant);
-        mStartForResult.launch(mCustomIntent);
+        mCustomIntent.putExtra("RestaurantId", selectedRestaurant.getId());
+        startActivity(mCustomIntent);
     }
 
 
@@ -139,8 +124,10 @@ public class RestaurantActivity extends AppCompatActivity {
 
         setReviews(selectedRestaurant.getReviews());
     }
+
     private void setReviews(List<Avis> reviews) {
         LinearLayout reviewLayout = findViewById(R.id.Reviews);
+        reviewLayout.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
         for (Avis review : reviews) {
