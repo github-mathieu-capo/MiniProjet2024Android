@@ -60,6 +60,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="@color/light_gray" />
 
+
             <!-- Reservation Form -->
             <LinearLayout
                 android:id="@+id/reservationFormLayout"
@@ -103,6 +104,25 @@
                     android:background="@color/light_gray" />
 
             </LinearLayout>
+
+            <!-- Map Button -->
+            <Button
+                android:id="@+id/map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/colorPrimary"
+                android:text="Show Map"
+                android:textColor="@android:color/white"
+                android:onClick="showMap"/>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/light_gray" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
