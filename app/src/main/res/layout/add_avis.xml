@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Button to open camera -->
     <LinearLayout
         android:id="@+id/restaurantLayout"
         android:layout_width="match_parent"
@@ -15,8 +16,10 @@
         android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@id/buttonAjouter"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.24">
 
         <EditText
             android:id="@+id/author"
@@ -91,32 +94,17 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Review"
-                android:textColor="@color/black"
-                android:textSize="16sp"
                 android:backgroundTint="@color/gray"
-                android:padding="12dp"
+                android:hint="Review"
                 android:inputType="textMultiLine"
-                android:minLines="3" />
+                android:minLines="3"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
-
     </LinearLayout>
-
-    <!-- Button to open camera -->
-    <Button
-        android:id="@+id/buttonOpenCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add photo(s)"
-        android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/restaurantLayout"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/buttonAjouter"
@@ -133,6 +121,38 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"/>
+
+    <ImageView
+        android:id="@+id/addPicture"
+        android:layout_width="125dp"
+        android:layout_height="96dp"
+        android:src="@drawable/ic_add_image"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAjouter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantLayout"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="125dp"
+        android:layout_height="96dp"
+        android:src="@drawable/ic_add_image"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAjouter"
+        app:layout_constraintEnd_toStartOf="@+id/allPictures"
+        app:layout_constraintStart_toEndOf="@+id/addPicture"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantLayout"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/allPictures"
+        android:layout_width="125dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="280dp"
+        android:src="@drawable/ic_add_image"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAjouter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantLayout"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

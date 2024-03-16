@@ -1,5 +1,6 @@
 package helloandroid.ut3.miniprojet2024android.utilities;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,5 +52,9 @@ public class FireBaseDatabaseLoader {
             }
         });
         return future;
+    }
+
+    public static CompletableFuture<LatLng> loadGPSForRestaurant(String path) {
+        return null;
     }
 }

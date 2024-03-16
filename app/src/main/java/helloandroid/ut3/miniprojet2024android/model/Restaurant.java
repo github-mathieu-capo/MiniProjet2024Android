@@ -3,12 +3,6 @@ package helloandroid.ut3.miniprojet2024android.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import android.os.Parcel;
-import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +10,7 @@ public class Restaurant implements Parcelable {
 
     private String id;
     private String name;
+    private String address;
     private String imageUrl;
     private String description;
     private List<Avis> reviews;
@@ -23,6 +18,7 @@ public class Restaurant implements Parcelable {
     protected Restaurant(Parcel in) {
         id = in.readString();
         name = in.readString();
+        address = in.readString();
         imageUrl = in.readString();
         description = in.readString();
         reviews = in.createTypedArrayList(Avis.CREATOR);
@@ -40,9 +36,10 @@ public class Restaurant implements Parcelable {
         }
     };
 
-    public Restaurant(String id, String name, String imageUrl, String description, List<Avis> reviews) {
+    public Restaurant(String id, String name,String adress, String imageUrl, String description, List<Avis> reviews) {
         this.id = id;
         this.name = name;
+        this.address = adress;
         this.imageUrl = imageUrl;
         this.description = description;
         this.reviews = reviews;
@@ -51,6 +48,7 @@ public class Restaurant implements Parcelable {
     protected Restaurant() {
         id = "";
         name = "";
+        address = "";
         imageUrl = "";
         description ="";
         reviews = new ArrayList<>();
@@ -66,6 +64,10 @@ public class Restaurant implements Parcelable {
 
     public String getName() {
         return name;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public String getImageUrl() {
@@ -90,6 +92,7 @@ public class Restaurant implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
+        dest.writeString(address);
         dest.writeString(imageUrl);
         dest.writeString(description);
         dest.writeTypedList(reviews);

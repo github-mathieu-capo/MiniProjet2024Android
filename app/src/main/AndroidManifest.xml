@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiniProjet2024Android"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBeIniX1qAu5gkcMgBJtv8tKICTpYB0cR0" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -38,6 +41,19 @@
             android:name=".AddAvisActivity"
             android:label="AddAvisActivity">
         </activity>
+        <activity
+            android:name=".MapActivity"
+            android:label="MapAcivity">
+        </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
