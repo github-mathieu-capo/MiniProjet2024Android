@@ -219,4 +219,9 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
 
+    public void showMap(View view) {
+        Intent mCustomIntent = new Intent(this, MapActivity.class);
+        mCustomIntent.putExtra("RestaurantId", selectedRestaurant.getId());
+        startActivity(mCustomIntent);
+    }
 }
