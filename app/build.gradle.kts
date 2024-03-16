@@ -35,6 +35,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-database")
     implementation("com.firebaseui:firebase-ui-storage:8.0.2")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation("com.google.firebase:firebase-storage")
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
