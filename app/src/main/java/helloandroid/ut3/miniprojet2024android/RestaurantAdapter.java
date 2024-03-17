@@ -1,7 +1,6 @@
 package helloandroid.ut3.miniprojet2024android;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
-import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
+import helloandroid.ut3.miniprojet2024android.utilities.firebase.images.FireBaseImageLoader;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
 

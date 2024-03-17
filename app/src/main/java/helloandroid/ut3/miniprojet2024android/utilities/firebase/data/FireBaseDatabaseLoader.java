@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android.utilities;
+package helloandroid.ut3.miniprojet2024android.utilities.firebase.data;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;

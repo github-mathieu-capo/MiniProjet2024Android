@@ -26,7 +26,7 @@ import java.util.Locale;
 
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
-import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
+import helloandroid.ut3.miniprojet2024android.utilities.firebase.images.FireBaseImageLoader;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;
 
 public class RestaurantActivity extends AppCompatActivity {

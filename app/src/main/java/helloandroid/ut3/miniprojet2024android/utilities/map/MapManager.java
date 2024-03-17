@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android.utilities;
+package helloandroid.ut3.miniprojet2024android.utilities.map;
 
 import android.content.Context;
 import android.location.Address;
