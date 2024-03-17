@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -25,6 +26,8 @@ public class MapManager implements OnMapReadyCallback {
     private GoogleMap mMap;
     private Geocoder geocoder;
     private Context context;
+
+    private GoogleMap.OnMarkerClickListener onMarkerClickListener;
 
     public MapManager(@NonNull Context context) {
         this.context = context;
@@ -68,5 +71,19 @@ public class MapManager implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                if (onMarkerClickListener != null) {
+                    return onMarkerClickListener.onMarkerClick(marker);
+                }
+                return false;
+            }
+        });
     }
+
+    public void setOnMarkerClickListener(GoogleMap.OnMarkerClickListener onMarkerClickListener) {
+        this.onMarkerClickListener = onMarkerClickListener;
+    }
+
 }
