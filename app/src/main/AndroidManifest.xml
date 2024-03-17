@@ -45,6 +45,10 @@
             android:name=".MapActivity"
             android:label="MapAcivity">
         </activity>
+        <activity android:name=".EditImageActivity"
+            android:label="EditImageActivity">
+
+        </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"

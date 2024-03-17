@@ -2,12 +2,17 @@ package helloandroid.ut3.miniprojet2024android;
 
 import static helloandroid.ut3.miniprojet2024android.Camera.REQUEST_IMAGE_CAPTURE;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -42,6 +47,9 @@ public class AddAvisActivity extends AppCompatActivity {
     private EditText authorEditText;
     private TextView descriptionEditText;
     private ImageView picture;
+    private boolean isImageSet = false;
+    private static final int REQUEST_EDIT_IMAGE = 1;
+    private String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +96,50 @@ public class AddAvisActivity extends AppCompatActivity {
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                if (isImageSet) {
+                    showOptionsDialog();
+                } else {
+                    dispatchTakePictureIntent();
+                }
             }
         });
 
+    }
+
+    private void showOptionsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Options")
+                .setItems(new CharSequence[]{"Modifier", "Supprimer", "Annuler"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                // Modifier
+                                openEditImageActivity();
+                                break;
+                            case 1:
+                                // Supprimer
+                                clearImage();
+                                break;
+                            case 2:
+                                // Annuler
+                                dialog.dismiss();
+                                break;
+                        }
+                    }
+                });
+        builder.show();
+    }
+
+    private void clearImage() {
+        picture.setImageResource(R.drawable.ic_add_image);
+        isImageSet = false;
+    }
+
+    private void openEditImageActivity() {
+        Intent intent = new Intent(this, EditImageActivity.class);
+        intent.putExtra("imagePath", imagePath);
+        startActivityForResult(intent, REQUEST_EDIT_IMAGE);
     }
 
     private void dispatchTakePictureIntent() {
@@ -104,12 +152,14 @@ public class AddAvisActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             // L'image a été capturée avec succès, obtenir le chemin de l'image
-            String imagePath = data.getStringExtra("imagePath");
+            imagePath = data.getStringExtra("imagePath");
             // Charger l'image à partir du chemin du fichier et l'afficher dans l'ImageView
             File imgFile = new File(imagePath);
             if (imgFile.exists()) {
                 Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 picture.setImageBitmap(bitmap);
+                isImageSet = true;
+
             }
         }
     }
