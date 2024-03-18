@@ -12,7 +12,7 @@ import android.os.Bundle;
 import com.google.firebase.FirebaseApp;
 import java.util.List;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
-import helloandroid.ut3.miniprojet2024android.utilities.RestaurantAdapter;
+import helloandroid.ut3.miniprojet2024android.views.RestaurantAdapter;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantViewModel;
 
 public class MainActivity extends AppCompatActivity {

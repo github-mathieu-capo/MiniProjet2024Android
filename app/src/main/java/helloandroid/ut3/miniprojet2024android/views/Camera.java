@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android.utilities;
+package helloandroid.ut3.miniprojet2024android.views;
 
 import android.Manifest;
 import android.content.Intent;

@@ -1,6 +1,6 @@
 package helloandroid.ut3.miniprojet2024android;
 
-import static helloandroid.ut3.miniprojet2024android.utilities.Camera.REQUEST_IMAGE_CAPTURE;
+import static helloandroid.ut3.miniprojet2024android.views.Camera.REQUEST_IMAGE_CAPTURE;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 
-import helloandroid.ut3.miniprojet2024android.utilities.Camera;
+import helloandroid.ut3.miniprojet2024android.views.Camera;
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;

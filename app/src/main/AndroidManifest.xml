@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".utilities.Camera"
+            android:name=".views.Camera"
             android:label="Camera">
         </activity>
         <activity

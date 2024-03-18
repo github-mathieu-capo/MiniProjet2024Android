@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android.utilities.map;
+package helloandroid.ut3.miniprojet2024android.views;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
