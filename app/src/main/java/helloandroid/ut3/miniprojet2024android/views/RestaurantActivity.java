@@ -29,8 +29,7 @@ import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.firebase.images.FireBaseImageLoader;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;
-import helloandroid.ut3.miniprojet2024android.views.AddAvisActivity;
-import helloandroid.ut3.miniprojet2024android.views.MapActivity;
+import helloandroid.ut3.miniprojet2024android.AddAvisActivity;
 
 public class RestaurantActivity extends AppCompatActivity {
 

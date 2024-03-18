@@ -38,7 +38,7 @@
             android:label="RestaurantActivity">
         </activity>
         <activity
-            android:name=".views.AddAvisActivity"
+            android:name=".AddAvisActivity"
             android:label="AddAvisActivity">
         </activity>
         <activity
