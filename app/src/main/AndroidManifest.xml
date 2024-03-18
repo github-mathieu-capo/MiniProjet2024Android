@@ -30,19 +30,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Camera"
+            android:name=".utilities.Camera"
             android:label="Camera">
         </activity>
         <activity
-            android:name=".RestaurantActivity"
+            android:name=".views.RestaurantActivity"
             android:label="RestaurantActivity">
         </activity>
         <activity
-            android:name=".AddAvisActivity"
+            android:name=".views.AddAvisActivity"
             android:label="AddAvisActivity">
         </activity>
         <activity
-            android:name=".MapActivity"
+            android:name=".views.MapActivity"
             android:label="MapAcivity">
         </activity>
         <provider

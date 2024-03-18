@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android;
+package helloandroid.ut3.miniprojet2024android.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,10 +24,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import helloandroid.ut3.miniprojet2024android.R;
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.firebase.images.FireBaseImageLoader;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;
+import helloandroid.ut3.miniprojet2024android.views.AddAvisActivity;
+import helloandroid.ut3.miniprojet2024android.views.MapActivity;
 
 public class RestaurantActivity extends AppCompatActivity {
 

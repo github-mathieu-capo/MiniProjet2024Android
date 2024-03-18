@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android;
+package helloandroid.ut3.miniprojet2024android.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import helloandroid.ut3.miniprojet2024android.R;
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
 import helloandroid.ut3.miniprojet2024android.utilities.map.ImagePagerAdapter;
