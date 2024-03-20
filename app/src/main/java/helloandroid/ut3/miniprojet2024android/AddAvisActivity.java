@@ -150,7 +150,7 @@ public class AddAvisActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+        if ( (requestCode == REQUEST_IMAGE_CAPTURE ) && resultCode == RESULT_OK && data != null) {
             // L'image a été capturée avec succès, obtenir le chemin de l'image
             imagePath = data.getStringExtra("imagePath");
             // Charger l'image à partir du chemin du fichier et l'afficher dans l'ImageView
