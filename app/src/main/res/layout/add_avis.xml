@@ -123,7 +123,7 @@
         android:layout_marginEnd="16dp"/>
 
     <ImageView
-        android:id="@+id/addPicture"
+        android:id="@+id/picture1"
         android:layout_width="125dp"
         android:layout_height="96dp"
         android:src="@drawable/ic_add_image"
@@ -133,18 +133,18 @@
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <ImageView
-        android:id="@+id/picture"
+        android:id="@+id/picture2"
         android:layout_width="125dp"
         android:layout_height="96dp"
         android:src="@drawable/ic_add_image"
         app:layout_constraintBottom_toTopOf="@+id/buttonAjouter"
-        app:layout_constraintEnd_toStartOf="@+id/allPictures"
-        app:layout_constraintStart_toEndOf="@+id/addPicture"
+        app:layout_constraintEnd_toStartOf="@+id/picture3"
+        app:layout_constraintStart_toEndOf="@+id/picture1"
         app:layout_constraintTop_toBottomOf="@+id/restaurantLayout"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <ImageView
-        android:id="@+id/allPictures"
+        android:id="@+id/picture3"
         android:layout_width="125dp"
         android:layout_height="96dp"
         android:layout_marginStart="280dp"
