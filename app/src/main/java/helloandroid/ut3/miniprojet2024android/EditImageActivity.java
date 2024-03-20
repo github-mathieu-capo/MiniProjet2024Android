@@ -34,6 +34,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -328,6 +329,14 @@ public class EditImageActivity extends AppCompatActivity implements SensorEventL
                     ".jpg",         /* suffix */
                     storageDir      /* directory */
             );
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+
+            // Enregistrer le bitmap dans le fichier
+            FileOutputStream outputStream = new FileOutputStream(image);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.close();
+
             Intent intent = new Intent();
             intent.putExtra("imagePath", image.getAbsolutePath());
             setResult(RESULT_OK, intent);
