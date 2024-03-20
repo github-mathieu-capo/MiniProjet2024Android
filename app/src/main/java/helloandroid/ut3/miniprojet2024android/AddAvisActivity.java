@@ -9,10 +9,7 @@ import android.graphics.BitmapFactory;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -28,13 +25,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.firebase.FirebaseApp;
 import java.io.File;
 
-import java.io.File;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 import helloandroid.ut3.miniprojet2024android.model.Avis;
+import helloandroid.ut3.miniprojet2024android.model.AvisPhoto;
 import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;
 
@@ -43,14 +43,11 @@ public class AddAvisActivity extends AppCompatActivity {
     private RestaurantDetailViewModel viewModel;
     private ImageView star1, star2, star3, star4, star5;
     private int rating = 0;
-
     private EditText authorEditText;
     private TextView descriptionEditText;
-    private ImageView picture;
-    private boolean isImageSet = false;
+    private AvisPhoto pictureToEdit;
+    private List<AvisPhoto> pictures;
     private static final int REQUEST_EDIT_IMAGE = 1;
-    private String imagePath;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,23 +89,30 @@ public class AddAvisActivity extends AppCompatActivity {
                 }
             });
         }
-        picture = findViewById(R.id.addPicture);
-        picture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isImageSet) {
-                    showOptionsDialog();
-                } else {
-                    dispatchTakePictureIntent();
-                }
-            }
-        });
 
-        picture2 = findViewById(R.id.picture);
+
+        // Photos of the review
+        pictures = new ArrayList<>();
+        pictures.add(new AvisPhoto(findViewById(R.id.picture1)));
+        pictures.add(new AvisPhoto(findViewById(R.id.picture2)));
+        pictures.add(new AvisPhoto(findViewById(R.id.picture3)));
+        for (AvisPhoto picture : pictures) {
+            picture.getPicture().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (picture.isSet()) {
+                        showOptionsDialog(picture);
+                    } else {
+                        dispatchTakePictureIntent(picture);
+                    }
+                }
+            });
+        }
+
 
     }
 
-    private void showOptionsDialog() {
+    private void showOptionsDialog(AvisPhoto picture) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Options")
                 .setItems(new CharSequence[]{"Modifier", "Supprimer", "Annuler"}, new DialogInterface.OnClickListener() {
@@ -117,11 +121,11 @@ public class AddAvisActivity extends AppCompatActivity {
                         switch (which) {
                             case 0:
                                 // Modifier
-                                openEditImageActivity();
+                                openEditImageActivity(picture);
                                 break;
                             case 1:
                                 // Supprimer
-                                clearImage();
+                                clearImage(picture);
                                 break;
                             case 2:
                                 // Annuler
@@ -133,18 +137,20 @@ public class AddAvisActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void clearImage() {
-        picture.setImageResource(R.drawable.ic_add_image);
-        isImageSet = false;
+    private void clearImage(AvisPhoto picture) {
+        picture.getPicture().setImageResource(R.drawable.ic_add_image);
+        picture.setSet(false);
     }
 
-    private void openEditImageActivity() {
+    private void openEditImageActivity(AvisPhoto picture) {
         Intent intent = new Intent(this, EditImageActivity.class);
-        intent.putExtra("imagePath", imagePath);
+        intent.putExtra("imagePath", picture.getImagePath());
+        pictureToEdit = picture;
         startActivityForResult(intent, REQUEST_EDIT_IMAGE);
     }
 
-    private void dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent(AvisPhoto picture) {
+        pictureToEdit = picture;
         Intent takePictureIntent = new Intent(this, Camera.class);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
@@ -154,13 +160,13 @@ public class AddAvisActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if ( (requestCode == REQUEST_IMAGE_CAPTURE || requestCode == REQUEST_EDIT_IMAGE) && resultCode == RESULT_OK && data != null) {
             // L'image a été capturée avec succès, obtenir le chemin de l'image
-            imagePath = data.getStringExtra("imagePath");
+            pictureToEdit.setImagePath(data.getStringExtra("imagePath"));
             // Charger l'image à partir du chemin du fichier et l'afficher dans l'ImageView
-            File imgFile = new File(imagePath);
+            File imgFile = new File(pictureToEdit.getImagePath());
             if (imgFile.exists()) {
                 Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                picture.setImageBitmap(bitmap);
-                isImageSet = true;
+                pictureToEdit.getPicture().setImageBitmap(bitmap);
+                pictureToEdit.setSet(true);
 
             }
         }
