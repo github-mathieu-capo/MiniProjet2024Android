@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -28,8 +27,6 @@ import java.io.File;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 import helloandroid.ut3.miniprojet2024android.R;
@@ -180,11 +177,9 @@ public class AddAvisActivity extends AppCompatActivity {
         ArrayList<String> picLink = new ArrayList<>();
         for(AvisPhoto pic : pictures) {
             if(!pic.getImagePath().isEmpty()) {
-                Log.i("TESTTTTT",cropPath(pic.getImagePath()));
                 String name = cropPath(pic.getImagePath());
                 picLink.add(name);
                 FireBaseImageUploader.uploadImage(BitmapFactory.decodeFile(pic.getImagePath()), name);
-                Log.i("TESTTTTT2",picLink.get(0));
             }
         }
         Avis avis = new Avis(author, rating, picLink, description);
