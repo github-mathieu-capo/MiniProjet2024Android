@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android;
+package helloandroid.ut3.miniprojet2024android.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,9 +24,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import helloandroid.ut3.miniprojet2024android.R;
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.Restaurant;
-import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageLoader;
+import helloandroid.ut3.miniprojet2024android.utilities.firebase.images.FireBaseImageLoader;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;
 
 public class RestaurantActivity extends AppCompatActivity {
@@ -219,4 +220,9 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
 
+    public void showMap(View view) {
+        Intent mCustomIntent = new Intent(this, MapActivity.class);
+        mCustomIntent.putExtra("RestaurantId", selectedRestaurant.getId());
+        startActivity(mCustomIntent);
+    }
 }

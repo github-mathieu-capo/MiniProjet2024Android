@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android.utilities;
+package helloandroid.ut3.miniprojet2024android.utilities.firebase.images;
 
 import android.graphics.Bitmap;
 import android.util.Log;

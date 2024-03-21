@@ -1,7 +1,8 @@
-package helloandroid.ut3.miniprojet2024android;
+package helloandroid.ut3.miniprojet2024android.views;
 
-import static helloandroid.ut3.miniprojet2024android.Camera.REQUEST_IMAGE_CAPTURE;
+import static helloandroid.ut3.miniprojet2024android.views.Camera.REQUEST_IMAGE_CAPTURE;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -10,29 +11,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ImageView;
-import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.FirebaseApp;
 import java.io.File;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
+import helloandroid.ut3.miniprojet2024android.R;
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.AvisPhoto;
 import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;
@@ -41,53 +38,43 @@ import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewMod
 public class AddAvisActivity extends AppCompatActivity {
 
     private RestaurantDetailViewModel viewModel;
-    private ImageView star1, star2, star3, star4, star5;
+    private ImageView[] stars = new ImageView[5];
     private int rating = 0;
     private EditText authorEditText;
     private TextView descriptionEditText;
     private AvisPhoto pictureToEdit;
     private List<AvisPhoto> pictures;
     private static final int REQUEST_EDIT_IMAGE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_avis);
-        ConstraintLayout parentLayout = findViewById(R.id.addAvisLayout);
 
-        parentLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard(AddAvisActivity.this);
-                return false;
-            }
-        });
-
-        authorEditText = findViewById(R.id.author);
-        descriptionEditText = findViewById(R.id.description);
-        findViewById(R.id.buttonAjouter).setOnClickListener(v -> ajouterAvis());
+        initializeViews();
 
         Intent intent = getIntent();
         if (intent != null) {
             String restaurantId = getIntent().getStringExtra("RestaurantId");
-            viewModel = new ViewModelProvider(this, new RestaurantDetailViewModel(restaurantId)).get(RestaurantDetailViewModel.class);
+            viewModel = new ViewModelProvider(this, new RestaurantDetailViewModel(restaurantId))
+                    .get(RestaurantDetailViewModel.class);
         }
+    }
 
-        FirebaseApp.initializeApp(this);
-        star1 = findViewById(R.id.star1);
-        star2 = findViewById(R.id.star2);
-        star3 = findViewById(R.id.star3);
-        star4 = findViewById(R.id.star4);
-        star5 = findViewById(R.id.star5);
-        for (int i = 1; i <= 5; i++) {
-            int starId = getResources().getIdentifier("star" + i, "id", getPackageName());
-            ImageView star = findViewById(starId);
-            final int finalI = i;
-            star.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onStarClick(finalI);
-                }
-            });
+    @SuppressLint("ClickableViewAccessibility")
+    private void initializeViews() {
+        authorEditText = findViewById(R.id.author);
+        descriptionEditText = findViewById(R.id.description);
+
+        stars[0] = findViewById(R.id.star1);
+        stars[1] = findViewById(R.id.star2);
+        stars[2] = findViewById(R.id.star3);
+        stars[3] = findViewById(R.id.star4);
+        stars[4] = findViewById(R.id.star5);
+
+        for (int i = 0; i < 5; i++) {
+            final int ratingValue = i + 1;
+            stars[i].setOnClickListener(v -> onStarClick(ratingValue));
         }
 
 
@@ -109,7 +96,12 @@ public class AddAvisActivity extends AppCompatActivity {
             });
         }
 
-
+        findViewById(R.id.buttonAjouter).setOnClickListener(v -> ajouterAvis());
+        ConstraintLayout parentLayout = findViewById(R.id.addAvisLayout);
+        parentLayout.setOnTouchListener((v, event) -> {
+            hideKeyboard(AddAvisActivity.this);
+            return false;
+        });
     }
 
     private void showOptionsDialog(AvisPhoto picture) {
@@ -172,52 +164,39 @@ public class AddAvisActivity extends AppCompatActivity {
         }
     }
 
+    private void ajouterAvis() {
+        String author = authorEditText.getText().toString();
+        String description = descriptionEditText.getText().toString();
+
+        Avis avis = new Avis(author, rating, new ArrayList<>(), description);
+        viewModel.updateRestaurantWithReview(avis, new RestaurantRepository.OnRestaurantUpdatedListener() {
+            @Override
+            public void onRestaurantUpdatedSuccessfully() {
+                Toast.makeText(getApplicationContext(), "Review added successfully!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            @Override
+            public void onRestaurantUpdateFailed() {
+                Toast.makeText(getApplicationContext(), "Failed to add review. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onStarClick(int selectedRating) {
+        for (int i = 0; i < 5; i++) {
+            if (i < selectedRating) {
+                stars[i].setImageResource(R.drawable.ic_yellow_star_filled);
+            } else {
+                stars[i].setImageResource(R.drawable.ic_yellow_star_outline);
+            }
+        }
+        rating = selectedRating;
+    }
+
     private void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (activity.getCurrentFocus() != null) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
     }
-
-    private void ajouterAvis() {
-            String author = authorEditText.getText().toString();
-            int grade = rating;
-            ArrayList<String> photos = new ArrayList<>();
-            String description = descriptionEditText.getText().toString();
-
-            Avis avis = new Avis(author, grade, photos, description);
-            viewModel.updateRestaurantWithReview(avis, new RestaurantRepository.OnRestaurantUpdatedListener() {
-                @Override
-                public void onRestaurantUpdatedSuccessfully() {
-                    Toast.makeText(getApplicationContext(), "Review added successfully!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                @Override
-                public void onRestaurantUpdateFailed() {
-                    Toast.makeText(getApplicationContext(), "Failed to add review. Please try again.", Toast.LENGTH_SHORT).show();
-                }
-            });
-    }
-
-
-
-    private void openCameraActivity() {
-        Intent intent = new Intent(this, Camera.class);
-        startActivity(intent);
-    }
-
-    public void onStarClick(int selectedRating) {
-        ImageView[] stars = {star1, star2, star3, star4, star5};
-
-        for (ImageView star : stars) {
-            star.setImageResource(R.drawable.ic_yellow_star_outline);
-        }
-
-        for (int i = 0; i < selectedRating; i++) {
-            stars[i].setImageResource(R.drawable.ic_yellow_star_filled);
-        }
-
-        rating = selectedRating;
-    }
-
 }

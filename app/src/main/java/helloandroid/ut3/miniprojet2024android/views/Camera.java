@@ -1,9 +1,8 @@
-package helloandroid.ut3.miniprojet2024android;
+package helloandroid.ut3.miniprojet2024android.views;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,9 +18,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
-
-import helloandroid.ut3.miniprojet2024android.utilities.FireBaseImageUploader;
 
 public class Camera extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
