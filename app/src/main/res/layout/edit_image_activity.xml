@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/imageToEdit"
-        android:layout_width="396dp"
-        android:layout_height="506dp"
+        android:layout_width="407dp"
+        android:layout_height="442dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,12 +20,9 @@
         android:id="@+id/colorButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="110dp"
         android:text="Filtre de couleur"
-        app:layout_constraintEnd_toStartOf="@+id/brightnessButton"
-        app:layout_constraintHorizontal_bias="0.278"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:text="Filtre de luminosité"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -60,5 +57,37 @@
         app:layout_constraintEnd_toStartOf="@+id/acceptChanges"
         app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/couleursGroup"
+        android:layout_width="340dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/imageToEdit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colorButton">
+
+        <RadioButton
+            android:id="@+id/redRadioButton"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Filtre rouge" />
+
+        <RadioButton
+            android:id="@+id/greenRadioButton"
+            android:layout_width="108dp"
+            android:layout_height="wrap_content"
+            android:text="Filtre vert" />
+
+        <RadioButton
+            android:id="@+id/blueRadioButton"
+            android:layout_width="145dp"
+            android:layout_height="49dp"
+            android:text="Filtre Bleu" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.Manifest;
+import android.widget.RadioGroup;
 
 
 import androidx.annotation.NonNull;
@@ -46,13 +47,6 @@ public class EditImageActivity extends AppCompatActivity implements SensorEventL
 
     private ImageView imageView;
     private Bitmap originalBitmap;
-    private Bitmap editedBitmap;
-    private Canvas canvas;
-    private Paint paint;
-
-    private float offsetX, offsetY; // Offset pour ajuster la position du sticker
-    private Bitmap stickerBitmap; // Bitmap du sticker
-
 
     // Paramètres pour l'AudioRecord
     private static final int SAMPLE_RATE = 44100;
@@ -66,6 +60,9 @@ public class EditImageActivity extends AppCompatActivity implements SensorEventL
     private boolean isCheckingBrightness =false;
 
     private static final int RECORD_AUDIO_PERMISSION_CODE = 101;
+
+    private RadioGroup couleursGroup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,46 +78,48 @@ public class EditImageActivity extends AppCompatActivity implements SensorEventL
         if (imgFile.exists()) {
             originalBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         }
-//        editedBitmap = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), originalBitmap.getConfig());
         imageView.setImageBitmap(originalBitmap);
-//        canvas = new Canvas(editedBitmap);
-//        canvas.drawBitmap(originalBitmap, 0, 0, null);
         // Vérification des autorisations pour l'enregistrement audio
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, RECORD_AUDIO_PERMISSION_CODE);
-        } else {
-            //startAudioRecording();
         }
 
         Button colorButton = findViewById(R.id.colorButton);
+        couleursGroup = findViewById(R.id.couleursGroup);
+        Button brightnessButton = findViewById(R.id.brightnessButton);
         colorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isRecording) {
+                    colorButton.setText("Valider");
+                    brightnessButton.setVisibility(View.GONE);
+                    couleursGroup.setVisibility(View.VISIBLE);
                     startAudioRecording();
                 } else {
+                    colorButton.setText("Filtre de couleur");
+                    brightnessButton.setVisibility(View.VISIBLE);
+                    couleursGroup.setVisibility(View.GONE);
                     stopAudioRecording();
                 }
             }
         });
 
-
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        Log.d("abuse", "ici : " + isCheckingBrightness);
-        if (lightSensor == null) {
-            // Le capteur de luminosité n'est pas disponible sur ce périphérique.
-            // Gérez cette situation.
-        }
 
-        Button brightnessButton = findViewById(R.id.brightnessButton);
+
         brightnessButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isCheckingBrightness) {
+                    brightnessButton.setText("Valider");
+                    colorButton.setVisibility(View.GONE);
                     onResume();
                     isCheckingBrightness = true;
+
                 } else {
+                    brightnessButton.setText("Filtre de luminosité");
+                    colorButton.setVisibility(View.VISIBLE);
                     updateImage();
                     onPause();
                 }
@@ -216,29 +215,23 @@ public class EditImageActivity extends AppCompatActivity implements SensorEventL
 
     private void applyColorFilter(double db) {
         ColorMatrix colorMatrix = new ColorMatrix();
-        float hueFactor = ((float) db - 50) / 30f;
-        hueFactor*= 180;
         if (db < 45) {
-            // Si la valeur aléatoire est inférieure à 1, mettre l'image en noir et blanc
             colorMatrix.setSaturation(0); // 0 pour le noir et blanc
-        } else if (db >= 45 && db < 55) {
-            // Ajustez la teinte pour l'axe 0 (rouge à jaune)
-            float rotation = (float) (db - 45) / 10;
-            colorMatrix.setRotate(0, rotation * 360);
-        } else if (db >= 55 && db < 65) {
-            float rotation = (float) (db - 55) / 10;
-            // Ajustez la teinte pour l'axe 1 (jaune à vert)
-            colorMatrix.setRotate(2, rotation * 360);
-        } else if (db >=65 && db < 75){
-            float rotation = (float) (db - 65) / 10;
-            // Ajustez la teinte pour l'axe 2 (vert à bleu)
-            colorMatrix.setRotate(1, rotation * 360);
+        } else if (db<=75) {
+            int axis = -1;
+            if (couleursGroup.getCheckedRadioButtonId() == R.id.redRadioButton) {
+                axis = 0;
+            } else if (couleursGroup.getCheckedRadioButtonId() == R.id.greenRadioButton) {
+                axis = 1;
+            } else if (couleursGroup.getCheckedRadioButtonId() == R.id.blueRadioButton){
+                axis = 2;
+            }
+            float rotation = (float) (db - 45) * 360 / 30;
+            colorMatrix.setRotate(axis, rotation );
         }
 
-// Créez un filtre de couleur avec la matrice de couleur
             ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(colorMatrix);
 
-// Appliquez le filtre de couleur à l'image
             imageView.setColorFilter(colorFilter);
 
     }
@@ -248,14 +241,6 @@ public class EditImageActivity extends AppCompatActivity implements SensorEventL
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RECORD_AUDIO_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startAudioRecording();
-            } else {
-                // La permission a été refusée
-                // Gérer le cas où l'enregistrement audio ne peut pas être démarré
-            }
-        }
     }
 
     @Override
@@ -286,8 +271,9 @@ public class EditImageActivity extends AppCompatActivity implements SensorEventL
     public void onSensorChanged(SensorEvent event) {
         if (isCheckingBrightness && event.sensor.getType() == Sensor.TYPE_LIGHT) {
 
-            float lux = event.values[0] * 2;
-            lux = (lux - 50) * 255 / 50;
+            float lux = event.values[0];
+            Log.d("LUMI1", "LUMI111111111111 : "+ lux);
+            lux = (lux - 35) * 255 / 35;
             // Faire quelque chose avec la valeur de luminosité (lux).
             Log.d("LUMI", "LUMI : "+ lux);
 
