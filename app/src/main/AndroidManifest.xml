@@ -39,14 +39,14 @@
             android:label="RestaurantActivity">
         </activity>
         <activity
-            android:name=".AddAvisActivity"
+            android:name=".views.AddAvisActivity"
             android:label="AddAvisActivity">
         </activity>
         <activity
             android:name=".views.MapActivity"
             android:label="MapAcivity">
         </activity>
-        <activity android:name=".EditImageActivity"
+        <activity android:name=".views.EditImageActivity"
             android:label="EditImageActivity">
 
         </activity>

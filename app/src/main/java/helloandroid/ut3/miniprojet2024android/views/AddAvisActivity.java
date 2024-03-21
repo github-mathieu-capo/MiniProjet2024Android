@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android;
+package helloandroid.ut3.miniprojet2024android.views;
 
 import static helloandroid.ut3.miniprojet2024android.views.Camera.REQUEST_IMAGE_CAPTURE;
 
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import helloandroid.ut3.miniprojet2024android.views.Camera;
+import helloandroid.ut3.miniprojet2024android.R;
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.AvisPhoto;
 import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;

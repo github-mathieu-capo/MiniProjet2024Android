@@ -1,4 +1,4 @@
-package helloandroid.ut3.miniprojet2024android;
+package helloandroid.ut3.miniprojet2024android.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +39,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import helloandroid.ut3.miniprojet2024android.R;
 
 public class EditImageActivity extends AppCompatActivity implements SensorEventListener {
 
