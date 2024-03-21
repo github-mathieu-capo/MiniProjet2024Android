@@ -33,6 +33,7 @@ import helloandroid.ut3.miniprojet2024android.R;
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.AvisPhoto;
 import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;
+import helloandroid.ut3.miniprojet2024android.utilities.firebase.images.FireBaseImageUploader;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;
 
 public class AddAvisActivity extends AppCompatActivity {
@@ -164,11 +165,24 @@ public class AddAvisActivity extends AppCompatActivity {
         }
     }
 
+    private String cropPath(String toCrop) {
+        String[] parts = toCrop.split("/");
+        String lastElement = parts[parts.length - 1];
+        return lastElement;
+    }
+
     private void ajouterAvis() {
         String author = authorEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
-
-        Avis avis = new Avis(author, rating, new ArrayList<>(), description);
+        ArrayList<String> picLink = new ArrayList<>();
+        for(AvisPhoto pic : pictures) {
+            if(!pic.getImagePath().isEmpty()) {
+                String name = cropPath(pic.getImagePath());
+                picLink.add(name);
+                FireBaseImageUploader.uploadImage(BitmapFactory.decodeFile(pic.getImagePath()), name);
+            }
+        }
+        Avis avis = new Avis(author, rating, picLink, description);
         viewModel.updateRestaurantWithReview(avis, new RestaurantRepository.OnRestaurantUpdatedListener() {
             @Override
             public void onRestaurantUpdatedSuccessfully() {

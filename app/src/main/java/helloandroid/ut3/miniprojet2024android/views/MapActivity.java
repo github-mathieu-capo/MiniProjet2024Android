@@ -2,6 +2,7 @@ package helloandroid.ut3.miniprojet2024android.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
@@ -28,13 +30,14 @@ public class MapActivity extends AppCompatActivity {
     private RestaurantViewModel restaurantManager;
     private String selectedRestaurantId;
     private List<Restaurant> upToDateRestaurants;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         upToDateRestaurants = new ArrayList<>();
-
+        viewPager = findViewById(R.id.viewPager);
         Intent intent = getIntent();
         if (intent != null) {
             selectedRestaurantId = intent.getStringExtra("RestaurantId");
@@ -57,9 +60,17 @@ public class MapActivity extends AppCompatActivity {
                 String restaurantName = marker.getTitle();
                 Restaurant currentRestaurant = getRestaurantFromName(restaurantName);
                 if (currentRestaurant != null) {
+                    viewPager.setVisibility(View.VISIBLE);
                     displayReviewImagesForRestaurant(currentRestaurant);
                 }
                 return false;
+            }
+        });
+
+        mapManager.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                viewPager.setVisibility(View.GONE);
             }
         });
     }
@@ -95,8 +106,6 @@ public class MapActivity extends AppCompatActivity {
                 imageNames.addAll(avis.getPhotos());
             }
         }
-
-        ViewPager viewPager = findViewById(R.id.viewPager);
         ImagePagerAdapter adapter = new ImagePagerAdapter(imageNames);
         viewPager.setAdapter(adapter);
     }

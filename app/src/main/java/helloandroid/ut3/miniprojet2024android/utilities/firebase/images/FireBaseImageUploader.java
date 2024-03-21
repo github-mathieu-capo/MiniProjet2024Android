@@ -15,7 +15,7 @@ public class FireBaseImageUploader {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
-        StorageReference imagesRef = storageRef.child("images/" + name + ".jpg");
+        StorageReference imagesRef = storageRef.child("reviews/" + name);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
