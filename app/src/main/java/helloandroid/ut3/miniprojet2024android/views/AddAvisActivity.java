@@ -36,6 +36,7 @@ import helloandroid.ut3.miniprojet2024android.R;
 import helloandroid.ut3.miniprojet2024android.model.Avis;
 import helloandroid.ut3.miniprojet2024android.model.AvisPhoto;
 import helloandroid.ut3.miniprojet2024android.repositories.RestaurantRepository;
+import helloandroid.ut3.miniprojet2024android.utilities.firebase.images.FireBaseImageUploader;
 import helloandroid.ut3.miniprojet2024android.viewmodels.RestaurantDetailViewModel;
 
 public class AddAvisActivity extends AppCompatActivity {
@@ -180,7 +181,9 @@ public class AddAvisActivity extends AppCompatActivity {
         for(AvisPhoto pic : pictures) {
             if(!pic.getImagePath().isEmpty()) {
                 Log.i("TESTTTTT",cropPath(pic.getImagePath()));
-                picLink.add(cropPath(pic.getImagePath()));
+                String name = cropPath(pic.getImagePath());
+                picLink.add(name);
+                FireBaseImageUploader.uploadImage(BitmapFactory.decodeFile(pic.getImagePath()), name);
                 Log.i("TESTTTTT2",picLink.get(0));
             }
         }
