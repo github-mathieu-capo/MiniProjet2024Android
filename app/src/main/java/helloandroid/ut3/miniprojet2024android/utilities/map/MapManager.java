@@ -28,6 +28,7 @@ public class MapManager implements OnMapReadyCallback {
     private Context context;
 
     private GoogleMap.OnMarkerClickListener onMarkerClickListener;
+    private GoogleMap.OnMapClickListener onMapClickListener;
 
     public MapManager(@NonNull Context context) {
         this.context = context;
@@ -80,10 +81,21 @@ public class MapManager implements OnMapReadyCallback {
                 return false;
             }
         });
+        if (onMapClickListener != null) {
+            mMap.setOnMapClickListener(onMapClickListener);
+        }
     }
 
     public void setOnMarkerClickListener(GoogleMap.OnMarkerClickListener onMarkerClickListener) {
         this.onMarkerClickListener = onMarkerClickListener;
+    }
+
+    public void setOnMapClickListener(GoogleMap.OnMapClickListener onMapClickListener) {
+        this.onMapClickListener = onMapClickListener;
+        // If map is ready, set the click listener immediately
+        if (mMap != null) {
+            mMap.setOnMapClickListener(onMapClickListener);
+        }
     }
 
 }
