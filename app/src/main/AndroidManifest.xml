@@ -6,6 +6,7 @@
         <package android:name="com.android.camera2"/>
     </queries>
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <application
         android:allowBackup="true"
@@ -44,6 +45,10 @@
         <activity
             android:name=".views.MapActivity"
             android:label="MapAcivity">
+        </activity>
+        <activity android:name=".EditImageActivity"
+            android:label="EditImageActivity">
+
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
